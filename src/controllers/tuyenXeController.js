@@ -1,5 +1,5 @@
 class tuyenXeController {
-  // [GET] /tuyenXe
+
   constructor() {}
   async getAllTuyenXe(req, res) {
     return res.status(200).json({

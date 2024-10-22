@@ -23,9 +23,9 @@ app.listen(process.env.PORT || 4000, () => {
 });
 app.get('/', (req, res) => {
     res.status(200).json({
-        message: "Welcome to the API Booking",
-        fullName: "Nguyen Phuc Dat",
-        subject: "API đồ án môn học"
+        title: "API Booking",
+        dev: "Nguyen Phuc Dat",
+        subject: "Ngon ngu phat trien ung dung moi",
     });
 });
 // Routes 
