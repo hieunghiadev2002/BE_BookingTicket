@@ -1,8 +1,22 @@
-const express = require('express');
-const { validateLogin, validateRegister } = require('../middlewares/validator');
-const { loginService } = require('../services/authService');
+const express = require("express");
 const router = express.Router();
-const { loginController, registerController } = require('../controllers/authController');
-router.post("/login", validateLogin, loginController);
-router.post("/register", validateRegister ,registerController)
+const authController = require("../controllers/authController");
+const validator = require("../middlewares/validator");
+const otpService = require("../services/OTPService");
+const checkDuplicateEmailPhone = require("../middlewares/checkDuplicates");
+//Login
+router.post("/login", validator.validateLogin(), authController.login);
+//Register
+router.post("/register", validator.validateRegister(),
+checkDuplicateEmailPhone, authController.register);
+router.post("/forgot-password", validator.validationForgotPassword(), authController.forgotPassword);
+router.post("/reset-password", (req, res) => {
+  return res.status(200).json({ message: "Reset Password" });
+});
+router.post('/verify-otp',validator.validateVerifyOtp(), authController.verifyOtp)
+router.post('/resend-otp',validator.validateResendOTP() ,(req, res) => {
+  return res.status(200).json({
+    message: "Resend OTP"
+  })
+})
 module.exports = router;

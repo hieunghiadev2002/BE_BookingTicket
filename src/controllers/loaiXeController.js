@@ -1,13 +1,17 @@
-const { getAllLoaiXeService, createLoaiXeService, deleteVehicleTypeService } = require("../services/loaiXeService");
+const {
+  getAllLoaiXeService,
+  createLoaiXeService,
+  deleteVehicleTypeService,
+} = require("../services/loaiXeService");
 
 const getAllVehicleTypes = async (req, res) => {
   const result = await getAllLoaiXeService();
   return res.status(200).json({
     status: "true",
     message: "Get all vehicle types",
-    data: result
+    data: result,
   });
-}
+};
 const createVehicleType = async (req, res) => {
   const { tenLoaiXe, soGhe } = req.body;
   const result = await createLoaiXeService({ tenLoaiXe, soGhe });
@@ -15,24 +19,23 @@ const createVehicleType = async (req, res) => {
     return res.status(400).json({
       status: "false",
       message: "Create vehicle type failed",
-      data: null
-    })
+      data: null,
+    });
   }
   return res.status(200).json({
     status: "true",
     message: "Create vehicle type",
-    data: result
-  })
+    data: result,
+  });
 };
 const getVehicleTypeById = async (req, res) => {
-  try
-  {}catch(error)
-  {
+  try {
+  } catch (error) {
     return res.status(500).json({
-      status: "false", 
+      status: "false",
       message: "Get vehicle type by id failed",
-      data: null
-    })
+      data: null,
+    });
   }
 };
 const deleteVehicleTypeId = async (req, res) => {
@@ -43,21 +46,26 @@ const deleteVehicleTypeId = async (req, res) => {
       return res.status(400).json({
         status: "false",
         message: "Delete vehicle type failed",
-        data: null
-      })
+        data: null,
+      });
     }
     return res.status(200).json({
       status: "true",
       message: "Delete vehicle type",
-      data: deletedVehicleType
+      data: deletedVehicleType,
     });
   } catch (error) {
     return res.status(500).json({
       status: "false",
       message: "Delete vehicle type failed",
-      data: null
-    })
+      data: null,
+    });
   }
 };
 
-module.exports = { getAllVehicleTypes, createVehicleType, getVehicleTypeById, deleteVehicleTypeId };
+module.exports = {
+  getAllVehicleTypes,
+  createVehicleType,
+  getVehicleTypeById,
+  deleteVehicleTypeId,
+};

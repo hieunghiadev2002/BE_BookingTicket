@@ -1,7 +1,11 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { authenticateToken, authorizeRoles } = require('../middlewares/jwt');
-const {getAllVehicleTypes, createVehicleType, deleteVehicleTypeId} = require('../controllers/loaiXeController');
+const { authenticateToken, authorizeRoles } = require("../middlewares/jwt");
+const {
+  getAllVehicleTypes,
+  createVehicleType,
+  deleteVehicleTypeId,
+} = require("../controllers/loaiXeController");
 /**
  * @swagger
  * /api/loaixe:
@@ -29,9 +33,14 @@ const {getAllVehicleTypes, createVehicleType, deleteVehicleTypeId} = require('..
  *       500:
  *         description: Internal server error
  */
-router.get('/', getAllVehicleTypes);
-router.post('/create', createVehicleType);
-router.get('/:id');
-router.put('/:id');
-router.delete('/remove/:id', authenticateToken, authorizeRoles('admin'), deleteVehicleTypeId);
+router.get("/", getAllVehicleTypes);
+router.post("/create", createVehicleType);
+router.get("/:id");
+router.put("/:id");
+router.delete(
+  "/remove/:id",
+  authenticateToken,
+  authorizeRoles("admin"),
+  deleteVehicleTypeId,
+);
 module.exports = router;
