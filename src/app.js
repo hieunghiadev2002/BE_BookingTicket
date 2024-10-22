@@ -1,11 +1,11 @@
 const express = require('express')
 const app = express();
-const connectDb = require('./src/configs/db');
-const errorHandler = require('./src/middlewares/errorHandler');
-const notFound = require('./src/middlewares/notFound');
-const configureRoutes = require('./src/configs/routes');
+const connectDb = require('./configs/db');
+const errorHandler = require('./middlewares/errorHandler');
+const notFound = require('./middlewares/notFound');
+const configureRoutes = require('./configs/routes');
 const cors = require('cors');
-require('./src/configs/config')
+require('./configs/config')
 app.use(express.json());
 app.use(cors());
 connectDb;

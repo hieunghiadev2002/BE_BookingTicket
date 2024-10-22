@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authController");
 const validator = require("../middlewares/validator");
-const otpService = require("../services/OTPService");
 const checkDuplicateEmailPhone = require("../middlewares/checkDuplicates");
 //Login
 router.post("/login", validator.validateLogin(), authController.login);
