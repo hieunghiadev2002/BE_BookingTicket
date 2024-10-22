@@ -9,5 +9,6 @@ const configureRoutes = (app) => {
   app.use('/api/loai-xe', loaiXeRoute);
   app.use('/api/xe', xeRoute);
   app.use('/api/chuyen-xe', chuyenXeRoute);
+  app.use('/api/quanHuyen')
 }
 module.exports = configureRoutes;
