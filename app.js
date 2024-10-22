@@ -4,6 +4,7 @@ const connectDb = require('./src/configs/db');
 const errorHandler = require('./src/middlewares/errorHandler');
 const notFound = require('./src/middlewares/notFound');
 const configureRoutes = require('./src/configs/routes');
+const cors = require('cors');
 require('./src/configs/config')
 app.use(express.json());
 app.use(cors());
