@@ -117,6 +117,24 @@ async resendOTP(req, res){
   const {email} = req.body; 
   
 }
+async requestOTP(req, res){
+  const {email} = req.body;
+  if(!email){
+    return res.status(400).json({
+      status: "false", 
+      message: "Email is required"
+    })
+  }
+  try {
+    
+  } catch (error) {
+    
+  }
+}
+async changePassword(req, res){
+  const {email, newPassword} = req.body; 
+
+}
 }
 
 module.exports = new authController();

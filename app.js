@@ -6,6 +6,7 @@ const notFound = require('./src/middlewares/notFound');
 const configureRoutes = require('./src/configs/routes');
 require('./src/configs/config')
 app.use(express.json());
+app.use(cors());
 connectDb;
 
 
