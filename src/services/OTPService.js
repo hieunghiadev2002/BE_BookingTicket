@@ -1,5 +1,5 @@
-const twilio = require("twilio");
-require("dotenv").config();
+const twilio = require('twilio');
+require('dotenv').config();
 class OTPService {
   constructor() {
     this.accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -17,8 +17,8 @@ class OTPService {
   }
   async createValidationRequest() {
     const validationRequest = await this.client.validationRequests.create({
-      friendlyName: "My Home Phone Number",
-      phoneNumber: "+84399864429",
+      friendlyName: 'My Home Phone Number',
+      phoneNumber: '+84399864429',
     });
     console.log(validationRequest.sid);
   }

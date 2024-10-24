@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const tinhThanhSchema = new mongoose.Schema({
   tenTinhThanh: {
@@ -8,4 +8,4 @@ const tinhThanhSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("tinhThanh", tinhThanhSchema);
+module.exports = mongoose.model('tinhThanh', tinhThanhSchema);
