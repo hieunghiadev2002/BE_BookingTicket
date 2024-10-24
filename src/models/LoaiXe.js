@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const loaiXeSchema = new mongoose.Schema({
   tenLoaiXe: {
@@ -21,4 +21,4 @@ const loaiXeSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("LoaiXe", loaiXeSchema);
+module.exports = mongoose.model('LoaiXe', loaiXeSchema);

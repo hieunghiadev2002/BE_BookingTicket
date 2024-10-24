@@ -1,23 +1,10 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const tuyenXeSchema = new mongoose.Schema({
-  tenTuyen: {
+  tenTuyenXe: {
     type: String,
     require: true,
     trim: true,
-  },
-  soChuyenTrongNgay: {
-    type: Number,
-    require: true,
-  },
-  timeDiChuyen: {
-    type: String,
-    require: true,
-    trim: true,
-  },
-  Gia: {
-    type: Number,
-    require: true,
   },
   diemDi: {
     type: String,
@@ -29,16 +16,21 @@ const tuyenXeSchema = new mongoose.Schema({
     require: true,
     trim: true,
   },
-  quangDuong: {
+  timeDiChuyen: {
+    type: String,
+    require: true,
+    trim: true,
+  },
+  khoangCach: {
     type: String,
     require: true,
     trim: true,
   },
   benXe: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "benXe",
+    ref: 'benXe',
     require: true,
   },
 });
 
-module.exports = mongoose.model("tuyenXe", tuyenXeSchema);
+module.exports = mongoose.model('tuyenXe', tuyenXeSchema);

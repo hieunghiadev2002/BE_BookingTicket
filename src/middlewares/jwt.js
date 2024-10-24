@@ -1,18 +1,18 @@
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
 
   if (token == null) {
     return res
       .status(401)
-      .json({ status: "false", message: "Access denied: token not provided" });
+      .json({ status: 'false', message: 'Access denied: token not provided' });
   }
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     console.log(err);
     if (err) {
-      return res.status(403).json({ message: "Access denied: invalid token" });
+      return res.status(403).json({ message: 'Access denied: invalid token' });
     }
     req.user = user;
     next();
@@ -21,11 +21,10 @@ const authenticateToken = (req, res, next) => {
 const authorizeRoles = (...roles) => {
   return (req, res, next) => {
     if (!req.user || !roles.includes(req.user.user.role)) {
-      return res
-        .status(403)
-        .json({ 
-          status: 'false', 
-          message: "Truy cập bị từ chối, chưa cấp quyền đăng nhập" });
+      return res.status(403).json({
+        status: 'false',
+        message: 'Truy cập bị từ chối, chưa cấp quyền đăng nhập',
+      });
     }
     next();
   };

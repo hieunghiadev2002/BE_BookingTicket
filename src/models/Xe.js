@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const xeSchema = new mongoose.Schema(
   {
@@ -22,9 +22,14 @@ const xeSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    tongSoGhe: {
+      type: Number,
+      require: true,
+      trim: true,
+    },
     loaiXe: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "LoaiXe",
+      ref: 'LoaiXe',
       require: true,
     },
     sucChua: {
@@ -40,4 +45,4 @@ const xeSchema = new mongoose.Schema(
   { timestamp: true },
 );
 
-module.exports = mongoose.model("Xe", xeSchema);
+module.exports = mongoose.model('Xe', xeSchema);

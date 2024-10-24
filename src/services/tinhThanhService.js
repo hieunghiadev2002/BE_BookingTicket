@@ -17,7 +17,7 @@ class tinhThanhService {
 
     const count = await this.tinhThanhSchema.countDocuments(query);
     
-     return {
+    return {
       tinhThanh,
       totalPages: Math.ceil(count / limit),
       currentPage: page,

@@ -1,20 +1,23 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const viTriGheSchema = mongoose.Schema({
-  viTri: {
+  soGhe: {
     type: String,
-    require: true,
+    required: true,
     trim: true,
   },
   trangThai: {
     type: String,
+    required: true,
+    enum: ['Trống', 'Đã Đặt'],
+    default: 'Trống',
   },
   xe: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Xe",
-    require: true,
+    ref: 'Xe',
+    required: true,
     trim: true,
   },
 });
 
-module.exports = mongoose.model("viTriGhe", viTriGheSchema);
+module.exports = mongoose.model('viTriGhe', viTriGheSchema);

@@ -1,50 +1,41 @@
-const ChuyenXe = require("../models/ChuyenXe");
-
-const danhSachChuyenXeService = async ({page, limit, sortBy, sortOrder}) => {
-  try {
-    const skip = (page - 1) * limit;
-    const danhSachChuyenXe = await ChuyenXe.find().sort({[sortBy]: sortOrder}).skip(skip).limit(limit);
-    const total = await ChuyenXe.countDocuments();
-    return {
-      danhSachChuyenXe,
-      total,
-      page, 
-      pages: Math.ceil(total / limit)
+const ChuyenXeSchema = require('../models/ChuyenXe');
+const LoaiXe = require('../models/LoaiXe');
+class chuyenXeService {
+  constructor() {
+    this.chuyenXeSchema = ChuyenXeSchema;
+  }
+  async getListChuyenXe() {
+    try {
+      const listChuyenXes = await this.chuyenXeSchema
+        .find()
+        .populate('tuyenXe')
+        .populate({
+          path: 'xe',
+          populate: {
+            path: 'loaiXe',
+            model: 'LoaiXe',
+          },
+        })
+        .exec();
+      return listChuyenXes;
+    } catch (error) {
+      console.error(error);
+      throw new Error('Error fetching routes', error);
     }
-  } catch (error) {
-    throw new Error("Get all vehicle failed");
   }
-};
-//get chuyen xe by id
-const createChuyenXeService = async (chuyenXe) => {
-  try {
-    return await ChuyenXe.create(chuyenXe);
-  } catch (error) {
-    throw new Error("Create vehicle failed");
-  }
-};
-const getChuyenXeById = async (id) => {
-  try {
-    return await ChuyenXe.findById(id);
-  } catch (error) {
-    throw new Error("Get vehicle by id failed");
-  }
-};
-const updateChuyenXeService = async (id, chuyenXeData) => {
-  try {
-    const chuyenXe = await ChuyenXe.findById(id);
-    if (!chuyenXe) {
-      throw new Error("Vehicle not found");
+  async postChuyenXe(data) {
+    try {
+      const newChuyenXe = await this.chuyenXeSchema.create(data);
+      if (!newChuyenXe) {
+        throw new Error('Error creating route');
+      }
+      await newChuyenXe.save();
+      return newChuyenXe;
+    } catch (error) {
+      throw new Error('Error creating route', error);
     }
-    return await chuyenXe.updateOne(chuyenXeData);
-  } catch (error) {
-    throw new Error("Error when update vehicle");
   }
-};
-const deleteChuyenXeService = async (id) => {};
-module.exports = {
-  danhSachChuyenXeService,
-  createChuyenXeService,
-  getChuyenXeById,
-  updateChuyenXeService,
-};
+  async putChuyenXe(id, data) {}
+  async deleteChuyenXe(id) {}
+}
+module.exports = new chuyenXeService();

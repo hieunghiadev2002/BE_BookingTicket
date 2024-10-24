@@ -1,20 +1,21 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const { authenticateToken, authorizeRoles } = require("../middlewares/jwt");
+const { authenticateToken, authorizeRoles } = require('../middlewares/jwt');
+const { checkDuplicateVehicleType } = require('../middlewares/checkDuplicates');
 const {
   getAllVehicleTypes,
   createVehicleType,
   deleteVehicleTypeId,
-} = require("../controllers/loaiXeController");
+} = require('../controllers/loaiXeController');
 
-router.get("/", getAllVehicleTypes);
-router.post("/create", createVehicleType);
-router.get("/:id");
-router.put("/:id");
+router.get('/', getAllVehicleTypes);
+router.post('/create', checkDuplicateVehicleType, createVehicleType);
+router.get('/:id');
+router.put('/:id');
 router.delete(
-  "/remove/:id",
+  '/remove/:id',
   authenticateToken,
-  authorizeRoles("admin"),
+  authorizeRoles('admin'),
   deleteVehicleTypeId,
 );
 module.exports = router;
