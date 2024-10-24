@@ -1,12 +1,14 @@
 const Seat = require('../models/ViTriGhe');
+
 class seatController {
   constructor() {}
   async getSeats(req, res) {
     try {
       const { idXe } = req.query;
-      const seats = await Seat.find({ idXe });
+      console.log(idXe);
+      const seats = await Seat.find({ idXe }).populate('xe');
       return res.status(200).json({
-        status: 'success',
+        status: 'true',
         seats,
       });
     } catch (error) {

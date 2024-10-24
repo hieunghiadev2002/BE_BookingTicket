@@ -1,18 +1,18 @@
-const mongoose = require("mongoose");
-require("dotenv").config();
-// Connect to MongoDB 
-class Db{
-  constructor(){
-    this._connect()
+const mongoose = require('mongoose');
+require('dotenv').config();
+// Connect to MongoDB
+class Db {
+  constructor() {
+    this._connect();
   }
-  _connect(){
+  _connect() {
     mongoose
       .connect(process.env.MONGODB_URL)
       .then(() => {
-        console.log("Database connection successful");
+        console.log('Database connection successful');
       })
       .catch((err) => {
-        console.error("Database connection error", err);
+        console.error('Database connection error', err);
       });
   }
 }

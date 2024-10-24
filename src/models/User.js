@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema(
   {
@@ -25,8 +25,8 @@ const userSchema = new mongoose.Schema(
 
     role: {
       type: String,
-      enum: ["user", "admin"],
-      default: "user",
+      enum: ['user', 'admin'],
+      default: 'user',
     },
     createdAt: {
       type: Date,
@@ -40,26 +40,26 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: false,
       default: null,
-    }, 
+    },
     otpExpires: {
       type: Date,
       required: false,
       default: null,
-    },  
+    },
     otpVerified: {
       type: Boolean,
-      default: false
+      default: false,
     },
     resetPasswordToken: {
       type: String,
       default: null,
     },
     resetPasswordExpires: {
-      type: Date, 
+      type: Date,
       default: null,
     },
   },
   { timestamps: true },
 );
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model('user', userSchema);

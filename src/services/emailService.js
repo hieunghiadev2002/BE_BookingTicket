@@ -9,15 +9,14 @@ class emailService {
       form: process.env.EMAIL,
       to,
       subject,
-      html
-    }
+      html,
+    };
     try {
       const info = await transporter.sendMail(mailOptions);
       console.log(info.response);
     } catch (error) {
-      console.error(error); 
+      console.error(error);
     }
   }
-  
 }
 module.exports = new emailService();

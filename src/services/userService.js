@@ -1,8 +1,6 @@
-const User = require("../models/User");
+const User = require('../models/User');
 class userService {
-  constructor() {
-    
-  }
+  constructor() {}
 
   async findUserByEmail(email) {
     return await User.findOne({ email });

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const quanHuyenSchema = new mongoose.Schema({
   tenQH: {
@@ -8,8 +8,8 @@ const quanHuyenSchema = new mongoose.Schema({
   },
   tinhThanh: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "tinhThanh",
+    ref: 'tinhThanh',
   },
 });
 
-module.exports = mongoose.model("quanHuyen", quanHuyenSchema);
+module.exports = mongoose.model('quanHuyen', quanHuyenSchema);
