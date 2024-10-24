@@ -8,51 +8,54 @@ const getAllXeSerivce = async ({page, limit}) => {
     throw new Error("Error fetching vehicles", error);
   }
 };
-const createXeService = async (xe) => {
+const createXeService = async (data) => {
   try {
-    return await Xe.create(xe);
+    const newXe = await Xe.create(data);
+    if(!newXe)
+    {
+      throw new Error("Error creating vehicle");
+    }
+    await newXe.save();
+    return newXe;
   } catch (error) {
+    console.error(error);
     throw new Error("Error creating vehicle", error);
   }
 };
 const getXeBydId = async (id) => {
   try {
-    return await Xe.findById(id);
+    return await Xe.findById(id).populate("loaiXe");
   } catch (error) {
     throw new Error("Error fetching vehicle by id", error);
   }
 };
-const xoaChuyenXeService = async (req, res) => {
+const removeCarService = async (id) => {
   try {
-    const { id } = req.params;
-    if (!id) {
-      return res.status(400).json({
-        status: "false",
-        message: "Id is required",
-      });
-    }
-    const xe = await Xe.findByIdAndDelete(id);
-    if (!xe) {
-      return res.status(400).json({
-        status: "false",
-        message: "Delete vehicle failed",
-      });
-    }
-    return res.status(200).json({
-      status: "true",
-      message: "Delete vehicle successfully",
-      data: xe,
-    });
+    
+    return await Xe.findByIdAndDelete(id);
   } catch (error) {
-    return res.status(500).json({
-      status: "false",
-      message: error.message,
-    });
+    console.error(error);
+    throw new Error("Error deleting vehicle", error);
   }
 };
+const updateXeService  = async (id, data) =>{
+  try {
+    const xe = await Xe.findByIdAndUpdate(id, data);
+    if(!xe)
+    {
+      throw new Error("Error updating vehicle");
+    }
+    return xe;
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+    })
+  }
+}
 module.exports = {
   getAllXeSerivce,
   getXeBydId,
   createXeService,
-  xoaChuyenXeService,
+  removeCarService,
+  updateXeService
 };

@@ -1,5 +1,6 @@
-const express = require("express");
-const { danhSachChuyenXe } = require("../controllers/chuyenXeController");
+const express = require('express');
+const chuyenXeController = require('../controllers/chuyenXeController');
 const router = express.Router();
-router.get("/danh-sach-chuyen-xe", danhSachChuyenXe);
+router.get('/', chuyenXeController.getChuyenXes);
+router.post('/create', chuyenXeController.postChuyenXe);
 module.exports = router;

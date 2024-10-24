@@ -11,6 +11,6 @@ const generateOTPEmail = (user, otp) => {
       <p style="font-weight: bold;">Booking Ticket</p>
     </div>
   `;
-}
+};
 
 module.exports = { generateOTPEmail };

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const ticketSchema = new mongoose.Schema({
   ngayLap: {
@@ -9,8 +9,8 @@ const ticketSchema = new mongoose.Schema({
   trangThai: {
     type: String,
     require: true,
-    enum: ["Vaild", "Expired"],
-    default: "Vaild",
+    enum: ['Vaild', 'Expired'],
+    default: 'Vaild',
   },
   tongTien: {
     type: String,
@@ -19,17 +19,18 @@ const ticketSchema = new mongoose.Schema({
   },
   viTriGhe: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "viTriGhe",
+    ref: 'viTriGhe',
     requireL: true,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
+    ref: 'user',
     requireL: true,
   },
   chuyenXe: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "chuyenXe",
+    ref: 'chuyenXe',
     requireL: true,
   },
 });
+mongoose.model('PhieuDatVe', ticketSchema);
