@@ -16,7 +16,7 @@ const comparePassword = async (inputPassword, userPassword) => {
   return await bcrypt.compare(inputPassword, userPassword);
 };
 
-
+//login service
 const loginService = async (email, password) => {
   let user = await findUserByEmail(email);
   if (!user) return response("false", "Email or password is invalid");

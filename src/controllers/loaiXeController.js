@@ -1,3 +1,4 @@
+const LoaiXe = require("../models/LoaiXe");
 const {
   getAllLoaiXeService,
   createLoaiXeService,
@@ -8,13 +9,22 @@ const getAllVehicleTypes = async (req, res) => {
   const result = await getAllLoaiXeService();
   return res.status(200).json({
     status: "true",
-    message: "Get all vehicle types",
+    message: "Lay loai xe thanh cong",
     data: result,
   });
 };
+//Create a new vehicle type
 const createVehicleType = async (req, res) => {
   const { tenLoaiXe, soGhe } = req.body;
-  const result = await createLoaiXeService({ tenLoaiXe, soGhe });
+  const existLoaiXe = await LoaiXe.findOne({ tenLoaiXe });
+  if(existLoaiXe)
+  {
+    return res.status(400).json({
+      status: "false",
+      message: "Vehicle type already exists",
+    });
+  }
+  const result = await createLoaiXeService(tenLoaiXe, soGhe);
   if (!result) {
     return res.status(400).json({
       status: "false",
@@ -30,6 +40,20 @@ const createVehicleType = async (req, res) => {
 };
 const getVehicleTypeById = async (req, res) => {
   try {
+    const {id} = req.params;
+    const result = await getVehicleTypeById(id);
+    if(!result)
+    {
+      return res.status(200).json({
+        message: "Vehicle type not found",
+        data: null,
+      })
+    }
+    return res.status(200).json({
+      status: "true",
+      message: "Get vehicle type by id",
+      data: result,
+    });
   } catch (error) {
     return res.status(500).json({
       status: "false",

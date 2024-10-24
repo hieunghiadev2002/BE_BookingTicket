@@ -20,10 +20,12 @@ const authenticateToken = (req, res, next) => {
 };
 const authorizeRoles = (...roles) => {
   return (req, res, next) => {
-    if (!req.user || !roles.includes(req.user.role)) {
+    if (!req.user || !roles.includes(req.user.user.role)) {
       return res
         .status(403)
-        .json({ message: "Access denied: insufficient permissions" });
+        .json({ 
+          status: 'false', 
+          message: "Truy cập bị từ chối, chưa cấp quyền đăng nhập" });
     }
     next();
   };

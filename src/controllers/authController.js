@@ -4,12 +4,9 @@ const tokenService = require("../services/tokenService");
 
 class authController {
   constructor() {}
-  //Login controller
   async login(req, res) {
     try {
-      console.log("login");
       const { email, password } = req.body;
-      //Check if user exists
       const result = await loginService(email, password);
       if (result.status === "false") {
         return res.status(400).json(result);
@@ -48,7 +45,7 @@ class authController {
       res.status(500).json({ message: "Internal Server Error" });
     }
   }
-
+  //forgot password
   async forgotPassword(req, res) {
     try {
       const { email } = req.body;
@@ -78,6 +75,7 @@ class authController {
       res.status(500).json({ message: "Internal Server Error" });
     }
   }
+  //reset password
   async resetPassword(req, res) {
     try {
       const { token, password } = req.body;
@@ -91,6 +89,7 @@ class authController {
       res.status(500).json({ message: "Internal Server Error" });
     }
   }
+  //verify otp
   async verifyOtp(req, res){
     try
     {
@@ -113,9 +112,34 @@ class authController {
       })
     }
 }
+//resend otp
 async resendOTP(req, res){
-  const {email} = req.body; 
-  
+  try{
+    const {email} = req.body;
+    console.log(email)
+    const existingUser = await userService.findUserByEmail(email);
+    if(!existingUser)
+    {
+      return res.status(200).json({
+        status: "false",
+        message: "User not found"
+      })
+    }
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    console.log(otp)
+    existingUser.otp = otp;
+    await userService.saveUser(existingUser);
+    return res.status(200).json({
+      status: "true",
+      message: "Resend otp successfully"
+    })
+  }catch(error)
+  {
+    console.error(error)
+    return res.status(500).json({
+      message: "Internal Server Error"
+    })
+  }  
 }
 async requestOTP(req, res){
   const {email} = req.body;
@@ -132,7 +156,9 @@ async requestOTP(req, res){
   }
 }
 async changePassword(req, res){
-  const {email, newPassword} = req.body; 
+  return res.status(200).json({
+    mgs: 'Not implemented yet'
+  })
 
 }
 }

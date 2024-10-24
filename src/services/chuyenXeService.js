@@ -15,6 +15,7 @@ const danhSachChuyenXeService = async ({page, limit, sortBy, sortOrder}) => {
     throw new Error("Get all vehicle failed");
   }
 };
+//get chuyen xe by id
 const createChuyenXeService = async (chuyenXe) => {
   try {
     return await ChuyenXe.create(chuyenXe);

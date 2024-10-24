@@ -4,5 +4,9 @@ const router = express.Router();
 
 router.get("/", xeController.getAllXe);
 router.post("/create", xeController.createXe);
-router.get("/getIncludeLoaiXe", xeController.getIncludeLoaiXe);
+router.get("/get-xe-loai-xe", xeController.getIncludeLoaiXe);
+router.get("/:id", xeController.getXeById);
+router.put("/:id", xeController.updateXe);
+router.delete("/:id", xeController.removeXe);
+
 module.exports = router;

@@ -6,9 +6,9 @@ const getAllLoaiXeService = async () => {
     throw new Error("Error fetching vehicle types", error);
   }
 };
-const createLoaiXeService = async (loaiXe) => {
+const createLoaiXeService = async (tenLoaiXe, soGhe) => {
   try {
-    return await LoaiXe.create(loaiXe);
+    return await LoaiXe.create({ tenLoaiXe, soGhe });
   } catch (error) {
     throw new Error("Error creating vehicle type", error);
   }
