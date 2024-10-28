@@ -5,6 +5,7 @@ const {
 } = require('../services/authService');
 const userService = require('../services/userService');
 const tokenService = require('../services/tokenService');
+const HttpStatusCodes = require('../common/httpStatusCodes');
 
 class authController {
   constructor() {}
@@ -13,16 +14,18 @@ class authController {
       const { email, password } = req.body;
       const result = await loginService(email, password);
       if (result.status === 'false') {
-        return res.status(400).json(result);
+        return res.status(HttpStatusCodes.BAD_REQUEST).json(result);
       }
-      return res.status(200).json({
-        status: true,
-        message: 'Login successfully',
+      return res.status(HttpStatusCodes.OK).json({
+        status: 'true',
+        message: 'Login account successfully',
         result: result.data,
       });
     } catch (err) {
       console.error(err);
-      res.status(500).json({ message: 'Internal Server Error' });
+      res
+        .status(HttpStatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ status: 'false', message: 'Internal Server Error' });
     }
   }
   //register account
@@ -53,7 +56,7 @@ class authController {
   async forgotPassword(req, res) {
     try {
       const { email } = req.body;
-      if (!email == null) {
+      if (!email) {
         return res
           .status(200)
           .json({ status: false, message: 'Email is required' });
@@ -67,7 +70,6 @@ class authController {
       }
       //Generate token
       existingUser.resetPasswordToken = await tokenService.generateToken();
-      console.log('log token: ' + existingUser.resetPasswordToken);
       existingUser.resetPasswordExpires = Date.now() + 3600000; // 1 hour
       await userService.saveUser(existingUser);
       return res.status(200).json({
@@ -82,15 +84,12 @@ class authController {
   //reset password
   async resetPassword(req, res) {
     try {
-      const { token, password } = req.body;
-      if (!token || !password) {
-        return res
-          .status(400)
-          .json({ status: false, message: 'Token and password are required' });
-      }
+      //get token from url
     } catch (error) {
-      console.log(err);
-      res.status(500).json({ message: 'Internal Server Error' });
+      console.error(error);
+      return res.status(500).json({
+        message: 'Internal Server Error',
+      });
     }
   }
   //verify otp
@@ -147,8 +146,6 @@ class authController {
         message: 'Email is required',
       });
     }
-    try {
-    } catch (error) {}
   }
   async changePassword(req, res) {
     return res.status(200).json({

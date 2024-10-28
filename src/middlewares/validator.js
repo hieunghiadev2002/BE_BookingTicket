@@ -1,4 +1,5 @@
 const { check, validationResult } = require('express-validator');
+const HttpStatusCodes = require('../common/httpStatusCodes');
 
 class validator {
   constructor() {}
@@ -78,6 +79,39 @@ class validator {
         next();
       },
     ];
+  }
+  validateCreateBenXe() {
+    return [
+      check('tenBenXe', 'Ten ben xe is required').exists(),
+      check('diaChi', 'Dia chi is required').exists(),
+      check('tinhThanh', 'Tinh Thanh is required').exists(),
+      check('tinhThanh', 'Tinh Thanh is not valid').isMongoId(),
+      (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          return res
+            .status(HttpStatusCodes.BAD_REQUEST)
+            .json({ errors: errors.array() });
+        }
+        next();
+      },
+    ];
+  }
+  validateCreateBooking() {
+    check('chuyenXe', 'Chuyen Xe is required').exists(),
+      check('chuyenXe', 'Chuyen Xe is not valid').isMongoId(),
+      check('danhSachGhe', 'Danh Sach Ghe is required').exists(),
+      check('danhSachGhe', 'Danh Sach Ghe is not valid').isArray(),
+      check('user', 'User is required').exists(),
+      (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          return res
+            .status(HttpStatusCodes.BAD_REQUEST)
+            .json({ errors: errors.array() });
+        }
+        next();
+      };
   }
 }
 

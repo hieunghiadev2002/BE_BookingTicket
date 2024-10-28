@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
-// Connect to MongoDB
+
 class Db {
   constructor() {
     this._connect();

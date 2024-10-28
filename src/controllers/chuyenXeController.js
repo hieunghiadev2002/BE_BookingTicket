@@ -2,6 +2,7 @@ const chuyenXeService = require('../services/chuyenXeService');
 class chuyenXeController {
   async getChuyenXes(req, res) {
     try {
+      //get list
       const listChuyenXes = await chuyenXeService.getListChuyenXe();
       if (!listChuyenXes) {
         return res.status(400).json({

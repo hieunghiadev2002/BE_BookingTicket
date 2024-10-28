@@ -6,15 +6,15 @@ const viTriGheSchema = mongoose.Schema({
     required: true,
     trim: true,
   },
-  trangThai: {
-    type: String,
-    required: true,
-    enum: ['Trống', 'Đã Đặt'],
-    default: 'Trống',
-  },
   xe: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Xe',
+    required: true,
+    trim: true,
+  },
+
+  priceSeats: {
+    type: Number,
     required: true,
     trim: true,
   },

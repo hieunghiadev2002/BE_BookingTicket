@@ -1,4 +1,3 @@
-const { parse } = require('dotenv');
 const tinhThanhService = require('../services/tinhThanhService'); // Ensure this is the correct path
 
 class TinhThanhController {

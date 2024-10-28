@@ -3,26 +3,25 @@ const mongoose = require('mongoose');
 const chuyenXeSchema = new mongoose.Schema({
   ngayDi: {
     type: Date,
-    require: true,
+    required: true,
   },
-
   ngayDen: {
     type: Date,
-    require: true,
+    required: true,
   },
   giaChuyenXe: {
     type: Number,
-    require: true,
+    required: true,
     trim: true,
   },
   soChoTrong: {
     type: Number,
-    require: true,
+    required: true,
   },
   tuyenXe: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'tuyenXe',
-    require: true,
+    required: true,
   },
   xe: {
     type: mongoose.Schema.Types.ObjectId,

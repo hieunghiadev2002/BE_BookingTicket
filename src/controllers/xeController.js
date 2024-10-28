@@ -46,7 +46,7 @@ class xeController {
     } catch (error) {
       return res.status(500).json({
         status: 'false',
-        message: 'Internal Server Error',
+        message: error.message,
       });
     }
   }
@@ -99,7 +99,7 @@ class xeController {
     } catch (error) {
       return res.status(500).json({
         status: 'false',
-        message: 'Internal Server Error',
+        message: error.message,
       });
     }
   }
@@ -145,12 +145,13 @@ class xeController {
       }
       return res.status(200).json({
         status: 'true',
-        message: 'Update vehicle',
+        message: 'Update car successfully',
         data: xe,
       });
     } catch (error) {
       return res.status(500).json({
-        message: 'Internal Server Error',
+        status: 'false',
+        message: error.message,
       });
     }
   }

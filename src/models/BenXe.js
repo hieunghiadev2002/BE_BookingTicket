@@ -9,9 +9,9 @@ const benXeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  quanHuyen: {
+  tinhThanh: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'quanHuyen',
+    ref: 'tinhThanh',
     required: true,
   },
 });
