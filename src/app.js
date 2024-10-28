@@ -6,31 +6,13 @@ const notFound = require('./middlewares/notFound');
 const configureRoutes = require('./configs/routes');
 const cors = require('cors');
 const path = require('path');
-const Xe = require('./models/Xe');
-const viTriGhe = require('./models/ViTriGhe');
-
-// const newXe = new Xe({
-//   tenXe: 'Limosine',
-//   bienSoXe: '59-X3 99999',
-//   nhaSanXuat: 'Toyota',
-//   colorXe: 'red',
-//   tongSoGhe: 30,
-//   loaiXe: '60dabf7d7b1b3f0015e5e4a6',
-// });
-// newXe.save().then((bus) => {
-//   for (let i = 1; i <= bus.tongSoGhe; i++) {
-//     const newGhe = new viTriGhe({
-//       soGhe: 'LMS-' + i,
-//       trangThai: 'Trống',
-//       xe: bus._id,
-//     });
-//     newGhe.save();
-//   }
-//   bus.save();
-// });
 
 //Middleware limit request
 const limiter = require('./configs/limiter');
+const HttpStatusCodes = require('./common/httpStatusCodes');
+const stripe = require('stripe');
+// eslint-disable-next-line no-undef
+
 require('./configs/config');
 app.use(express.json());
 app.use(cors());
@@ -49,8 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 // limiter
 app.use(limiter);
 app.listen(process.env.PORT || 4000, () => {
-  console.log('Server is running on port ', process.env.PORT),
-    console.log('Swagger is running on port ', process.env.PORT);
+  console.log('Server is running on port ', process.env.PORT);
 });
 
 // Routes

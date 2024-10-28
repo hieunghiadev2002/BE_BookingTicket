@@ -3,13 +3,19 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 const validator = require('../middlewares/validator');
 const { checkDuplicateEmailPhone } = require('../middlewares/checkDuplicates');
+const { checkIsActiveUser } = require('../middlewares/middlware');
 
-router.post('/login', validator.validateLogin(), authController.login);
+router.post(
+  '/login',
+  validator.validateLogin(),
+  checkIsActiveUser,
+  authController.login,
+);
 router.post(
   '/register',
-  validator.validateRegister(),
-  checkDuplicateEmailPhone,
-  authController.register,
+  validator.validateRegister(), //validation
+  checkDuplicateEmailPhone, // check duplicate email and phone
+  authController.register, // controller
 );
 router.post(
   '/forgot-password',

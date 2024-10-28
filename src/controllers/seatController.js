@@ -5,7 +5,6 @@ class seatController {
   async getSeats(req, res) {
     try {
       const { idXe } = req.query;
-      console.log(idXe);
       const seats = await Seat.find({ idXe }).populate('xe');
       return res.status(200).json({
         status: 'true',

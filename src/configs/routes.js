@@ -1,47 +1,66 @@
-const express = require('express');
 const authRoute = require('../routes/authRoute');
-const loaiXeRoute = require('../routes/loaiXeRoute');
-const xeRoute = require('../routes/xeRoute');
+const LoaiXeRouter = require('../routes/loaiXeRoute');
+const XeRouter = require('../routes/xeRoute');
 const jwt = require('../middlewares/jwt');
-const chuyenXeRoute = require('../routes/chuyenXeRoute');
-const tuyenXeRouter = require('../routes/tuyenXeRoute');
-const tinhThanhRoute = require('../routes/tinhThanhRoute');
+const ChuyenXeRouter = require('../routes/chuyenXeRoute');
+const TuyenXeRouter = require('../routes/tuyenXeRoute');
+const TinhThanhRouter = require('../routes/tinhThanhRoute');
 const seatRouter = require('../routes/seatRoute');
+const HttpStatusCodes = require('../common/httpStatusCodes');
+const BenXeRouter = require('../routes/benXeRoute');
+const BookingRouter = require('../routes/bookingTicketRoute');
+const ticketRouter = require('../routes/ticketRoute');
+const { validateCreateBooking } = require('../middlewares/validator');
 const configureRoutes = (app) => {
-  app.get('/', welcome);
+  app.use('/', welcome);
   app.use('/api/auth', authRoute);
   app.use(
     '/api/loai-xe',
     jwt.authenticateToken,
     jwt.authorizeRoles('user', 'admin'),
-    loaiXeRoute,
+    LoaiXeRouter,
   );
   app.use(
     '/api/xe',
     jwt.authenticateToken,
     jwt.authorizeRoles('user', 'admin'),
-    xeRoute,
+    XeRouter,
   );
   app.use(
     '/api/chuyen-xe',
     jwt.authenticateToken,
     jwt.authorizeRoles('user', 'admin'),
-    chuyenXeRoute,
+    ChuyenXeRouter,
   );
   app.use(
     '/api/tinh-thanh',
     jwt.authenticateToken,
     jwt.authorizeRoles('user', 'admin'),
-    tinhThanhRoute,
+    TinhThanhRouter,
   );
-  app.use('/api/tuyen-xe', jwt.authenticateToken, tuyenXeRouter);
-  app.use('/seat', seatRouter);
+
+  app.use('/api/tuyen-xe', jwt.authenticateToken, TuyenXeRouter);
+  app.use('/seat', jwt.authenticateToken, seatRouter);
+  app.use(
+    '/api/ben-xe',
+    jwt.authenticateToken,
+    jwt.authorizeRoles('admin', 'user'),
+    BenXeRouter,
+  );
+  app.use(
+    '/api/booking-ticket',
+    validateCreateBooking,
+    jwt.authenticateToken,
+    jwt.authorizeRoles('user', 'admin'),
+    BookingRouter,
+  );
+  app.use('/api/ticket', jwt.authenticateToken, ticketRouter);
 };
 function welcome(req, res) {
-  res.status(200).json({
+  res.status(HttpStatusCodes.OK).json({
     title: 'API Booking',
     dev: 'Nguyen Phuc Dat',
-    subject: 'Ngon ngu phat trien ung dung moi',
+    subject: 'NodeJS',
   });
 }
 module.exports = configureRoutes;

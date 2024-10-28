@@ -126,11 +126,29 @@ const resendOTPService = async (email) => {
     user.otpExpires = otpExpiresAt;
     await emailService.sendOTP(user, 'New OTP');
     await user.save();
-  } catch (error) {}
+  } catch (error) {
+    return response('false', 'An error occurred while resending OTP', error);
+  }
+};
+const resetPasswordService = async (email, newPassword) => {
+  try {
+    const user = await userSchema.findOne({ email });
+    if (!user) {
+      throw Error('User not found');
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+    return user;
+  } catch (error) {
+    console.error(error);
+    throw Error('An error occurred while resetting password');
+  }
 };
 module.exports = {
   loginService,
   registerService,
   verifyOtpService,
   resendOTPService,
+  resetPasswordService,
 };
