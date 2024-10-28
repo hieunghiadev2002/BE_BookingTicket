@@ -12,7 +12,6 @@ const BookingRouter = require('../routes/bookingTicketRoute');
 const ticketRouter = require('../routes/ticketRoute');
 const { validateCreateBooking } = require('../middlewares/validator');
 const configureRoutes = (app) => {
-  app.use('/', welcome);
   app.use('/api/auth', authRoute);
   app.use(
     '/api/loai-xe',
@@ -56,11 +55,5 @@ const configureRoutes = (app) => {
   );
   app.use('/api/ticket', jwt.authenticateToken, ticketRouter);
 };
-function welcome(req, res) {
-  res.status(HttpStatusCodes.OK).json({
-    title: 'API Booking',
-    dev: 'Nguyen Phuc Dat',
-    subject: 'NodeJS',
-  });
-}
+
 module.exports = configureRoutes;
