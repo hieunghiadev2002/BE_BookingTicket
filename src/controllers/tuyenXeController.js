@@ -1,3 +1,4 @@
+const HttpStatusCodes = require('../common/httpStatusCodes');
 const tuyenXeService = require('../services/tuyenXeService');
 class tuyenXeController {
   async getListTuyenXes(req, res) {
@@ -16,6 +17,37 @@ class tuyenXeController {
       });
     }
   }
+
+  async getTuyenXeByDiemDiDiemDen(req, res) {
+    try {
+      const { diemDi, diemDen } = req.body;
+      if (!diemDi || !diemDen) {
+        return res.status(HttpStatusCodes.BAD_REQUEST).json({
+          status: 'false',
+          message: 'Thiếu thông tin',
+        });
+      }
+      const tuyenXe = await tuyenXeService.timTuyenXes({ diemDi, diemDen });
+
+      if (!tuyenXe || tuyenXe.length === 0) {
+        return res.status(HttpStatusCodes.NOT_FOUND).json({
+          status: 'false',
+          message: 'Không tìm thấy tuyến xe',
+        });
+      }
+      return res.status(HttpStatusCodes.OK).json({
+        status: 'true',
+        data: tuyenXe,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        status: 'false',
+        message: 'Lỗi máy chủ nội bộ',
+      });
+    }
+  }
+
   async postTuyenXes(req, res) {
     try {
       const { tenTuyenXe, diemDi, diemDen, timeDiChuyen, khoangCach, benXe } =

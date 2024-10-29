@@ -13,6 +13,21 @@ class tuyenXeService {
       throw new Error('Error fetching routes', error);
     }
   }
+
+  async timTuyenXes({ diemDi, diemDen }) {
+    try {
+      const timChuyenXe = await this.tuyenXeSchema.find({
+        diemDi: diemDi,
+        diemDen: diemDen,
+      });
+
+      return timChuyenXe;
+    } catch (error) {
+      console.error(error);
+      throw new Error('Error fetching routes', error);
+    }
+  }
+
   async postTuyenXe(data) {
     try {
       const newTuyenXe = await this.tuyenXeSchema.create(data);

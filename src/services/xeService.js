@@ -20,7 +20,7 @@ const createXeService = async (data) => {
     throw new Error('Error creating vehicle', error);
   }
 };
-const getXeBydId = async (id) => {
+const getXeById = async (id) => {
   try {
     return await Xe.findById(id).populate('loaiXe');
   } catch (error) {
@@ -50,7 +50,7 @@ const updateXeService = async (id, data) => {
 };
 module.exports = {
   getAllXeSerivce,
-  getXeBydId,
+  getXeById,
   createXeService,
   removeCarService,
   updateXeService,

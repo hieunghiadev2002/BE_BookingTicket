@@ -8,12 +8,12 @@ const ChiTietGheSchema = new mongoose.Schema({
   chuyenXe: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'ChuyenXe',
+    ref: 'chuyenXe',
   },
   trangThai: {
     type: String,
-    enum: ['pending', 'completed', 'cancelled'],
-    default: 'pending',
+    enum: ['Trống', 'Đang Chọn', 'Đã Đặt'],
+    default: 'Trống',
   },
 });
 module.exports = mongoose.model('ChiTietGhe', ChiTietGheSchema);

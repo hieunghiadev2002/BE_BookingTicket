@@ -8,8 +8,7 @@ const {
 class xeController {
   async getAllXe(req, res) {
     try {
-      const { page, limit } = req.query;
-      const getAllXe = await Xe.find(page, limit).populate('LoaiXe');
+      const getAllXe = await Xe.find();
       if (!getAllXe) {
         return res.status(400).json({
           status: 'false',

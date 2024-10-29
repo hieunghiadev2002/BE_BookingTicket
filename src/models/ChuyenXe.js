@@ -5,6 +5,7 @@ const chuyenXeSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+
   ngayDen: {
     type: Date,
     required: true,
