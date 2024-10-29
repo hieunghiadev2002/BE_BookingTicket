@@ -10,9 +10,9 @@ const HttpStatusCodes = require('../common/httpStatusCodes');
 const BenXeRouter = require('../routes/benXeRoute');
 const BookingRouter = require('../routes/bookingTicketRoute');
 const ticketRouter = require('../routes/ticketRoute');
-const { validateCreateBooking } = require('../middlewares/validator');
+const validateCreateBooking = require('../middlewares/validator');
 const configureRoutes = (app) => {
-  app.use('/', welcome);
+  //app.use('/', welcome);
   app.use('/api/auth', authRoute);
   app.use(
     '/api/loai-xe',
@@ -47,14 +47,16 @@ const configureRoutes = (app) => {
     jwt.authorizeRoles('admin', 'user'),
     BenXeRouter,
   );
-  app.use(
-    '/api/booking-ticket',
-    validateCreateBooking,
+  app.use('/api/booking-ticket',
+    validateCreateBooking.validateCreateBooking(),
     jwt.authenticateToken,
     jwt.authorizeRoles('user', 'admin'),
     BookingRouter,
   );
-  app.use('/api/ticket', jwt.authenticateToken, ticketRouter);
+  app.use('/api/ticket', 
+    jwt.authenticateToken, 
+    jwt.authorizeRoles('user', 'admin'),
+    ticketRouter);
 };
 function welcome(req, res) {
   res.status(HttpStatusCodes.OK).json({

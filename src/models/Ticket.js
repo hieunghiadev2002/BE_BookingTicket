@@ -34,20 +34,20 @@ const TicketSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
-    paymentDetails: {
-      amount: {
-        type: Number,
-        required: true,
-      },
-      currency: {
-        type: String,
-        required: true,
-      },
-      paymentMethodId: {
-        type: String,
-        required: true,
-      },
-    },
+    // paymentDetails: {
+    //   amount: {
+    //     type: Number,
+    //     required: true,
+    //   },
+    //   currency: {
+    //     type: String,
+    //     required: true,
+    //   },
+    //   paymentMethodId: {
+    //     type: String,
+    //     required: true,
+    //   },
+    // },
   },
   { timestamps: true },
 );

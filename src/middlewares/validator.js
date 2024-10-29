@@ -98,11 +98,13 @@ class validator {
     ];
   }
   validateCreateBooking() {
-    check('chuyenXe', 'Chuyen Xe is required').exists(),
+    return[
+      check('chuyenXe', 'Chuyen Xe is required').exists(),
       check('chuyenXe', 'Chuyen Xe is not valid').isMongoId(),
       check('danhSachGhe', 'Danh Sach Ghe is required').exists(),
       check('danhSachGhe', 'Danh Sach Ghe is not valid').isArray(),
-      check('user', 'User is required').exists(),
+    
+      //check('user', 'User is required').exists(),
       (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -111,7 +113,8 @@ class validator {
             .json({ errors: errors.array() });
         }
         next();
-      };
+      },
+    ];
   }
 }
 

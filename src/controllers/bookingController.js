@@ -6,8 +6,9 @@ class bookingTicketController {
   //con loi chua fix xong
   async bookingTicket(req, res) {
     try {
-      const userId = req.user.user.id;
-      const { chuyenXeId, danhSachGhe, paymentDetails } = req.body;
+      console.log("Đã vào tới đây");
+      const userId = req.user.user.userId;
+      const { chuyenXe, danhSachGhe, tongTien, trangThaiVe } = req.body;
       // if (!userId || !chuyenXeId || !danhSachGhe || !paymentDetails) {
       //   return res.status(HttpStatusCodes.BAD_REQUEST).json({
       //     status: false,
@@ -25,9 +26,11 @@ class bookingTicketController {
       //   });
       // }
       const booking = await bookingService.createBooking({
-        chuyenXe: chuyenXeId,
-        danhSachGhe,
+        chuyenXe: chuyenXe,
+        danhSachGhe: danhSachGhe,
         user: userId,
+        tongTien: tongTien,
+        trangThaiVe: trangThaiVe
       });
       // const paymentResult = await bookingService.processPayment(paymentDetails);
       // if (!paymentResult.success) {
@@ -46,7 +49,9 @@ class bookingTicketController {
         status: true,
         message: 'Booking ticket successfully',
       });
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error(error);
       return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json({
         status: false,
@@ -72,7 +77,7 @@ class bookingTicketController {
       });
     }
   }
-  async removeTicket(req, res) {}
-  async updateTicket(req, res) {}
+  // async removeTicket(req, res) {}
+  // async updateTicket(req, res) {}
 }
 module.exports = new bookingTicketController();
