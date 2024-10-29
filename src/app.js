@@ -6,7 +6,7 @@ const notFound = require('./middlewares/notFound');
 const configureRoutes = require('./configs/routes');
 const cors = require('cors');
 const path = require('path');
-
+const ViTriGheSchema = require('./models/ViTriGhe');
 //Middleware limit request
 const limiter = require('./configs/limiter');
 const HttpStatusCodes = require('./common/httpStatusCodes');
@@ -18,6 +18,20 @@ app.use(express.json());
 app.use(cors());
 connectDb;
 
+// const seedDataViTriGhe = async () => {
+//   console.log('seedDataViTriGhe');
+//   for (let i = 1; i <= 8; i++) {
+//     console.log(i);
+//     const viTriGhe = new ViTriGheSchema({
+//       soGhe: 'LMS-' + i,
+//       priceSeats: 120000,
+//       xe: '6720b93ba4c2b8ca7ef62e06',
+//     });
+//     const a = await viTriGhe.save();
+//     console.log(a);
+//   }
+// };
+// seedDataViTriGhe();
 //View engine
 app.set('view engine', 'ejs');
 //set view directory

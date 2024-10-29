@@ -32,7 +32,7 @@ const loginService = async (email, password) => {
       email: user.email,
     },
   };
-  const accessToken = generateToken(payload, '1h');
+  const accessToken = generateToken(payload, '10h');
   const refreshToken = generateToken(payload, '7d');
   if (!accessToken || !refreshToken)
     return response('false', 'Error generating token');
