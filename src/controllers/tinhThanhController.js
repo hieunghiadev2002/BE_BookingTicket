@@ -3,14 +3,7 @@ const tinhThanhService = require('../services/tinhThanhService'); // Ensure this
 class TinhThanhController {
   async getTinhThanh(req, res) {
     try {
-      let { limit, page, search } = req.query;
-      limit = parseInt(limit) || 5;
-      page = parseInt(page) || 1;
-      const listTinhThanh = await tinhThanhService.getAllTinhThanhService({
-        limit,
-        page,
-        search,
-      });
+      const listTinhThanh = await tinhThanhService.getAllTinhThanhService();
       return res.status(200).json({
         status: true,
         data: listTinhThanh,

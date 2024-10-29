@@ -13,7 +13,6 @@ const ticketRouter = require('../routes/ticketRoute');
 const validateCreateBooking = require('../middlewares/validator');
 const chiTietGheRouter = require('../routes/chiTietGheRoute');
 const configureRoutes = (app) => {
-  //app.use('/', welcome);
   app.use('/api/auth', authRoute);
   app.use(
     '/api/loai-xe',
