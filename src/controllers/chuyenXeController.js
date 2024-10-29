@@ -55,6 +55,7 @@ class chuyenXeController {
       const idXe = newChuyenXe.xe;
       console.log('ID xe: ' + idXe);
       const timXe = await xeService.getXeById(idXe);
+      console.log('Tìm xe: ' + timXe);
       if (!timXe) {
         return res.status(400).json({
           status: 'false',
@@ -62,7 +63,7 @@ class chuyenXeController {
         });
       }
       //loi o day
-      const soCho = timXe.tongSoGhe;
+      const soCho = timXe.sucChua;
       console.log('Số chỗ: ' + soCho);
       const prefix = getPrefixBySoCho(soCho);
       if (prefix) {
@@ -76,12 +77,14 @@ class chuyenXeController {
           });
         }
 
-        for (const viTriGhe of danhSachViTriGhe) {
+        for (let ViTriGhe of danhSachViTriGhe) {
+          console.log('Vị trí ghế: ' + ViTriGhe);
           const newChiTietGhe = await chiTietGheService.createChiTietGhe({
-            viTriGhe: viTriGhe._id,
+            vitriGhe: ViTriGhe._id,
             chuyenXe: newChuyenXe._id,
             trangThai: 'Trống',
           });
+          console.log('id chi tiet ghe: ' + newChiTietGhe.ViTriGhe);
           console.log('Chi tiết ghế: ' + newChiTietGhe);
           if (!newChiTietGhe) {
             return res.status(400).json({
@@ -106,8 +109,10 @@ class chuyenXeController {
   }
   async getChuyenXeByTuyenXeId(req, res) {
     try {
-      const { tuyenXeId } = req.query;
-      console.log('ID tuyến xe: ' + tuyenXeId);
+      //12-02-2002
+      //
+      const { tuyenXeId, ngayDi, ngayDen } = req.query;
+      console.log(req.query);
       const chuyenXe = await chuyenXeService.getChuyenXeByTuyenXeId(tuyenXeId);
       if (!chuyenXe) {
         return res.status(400).json({

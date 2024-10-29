@@ -22,11 +22,6 @@ const xeSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    tongSoGhe: {
-      type: Number,
-      require: true,
-      trim: true,
-    },
     loaiXe: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'LoaiXe',

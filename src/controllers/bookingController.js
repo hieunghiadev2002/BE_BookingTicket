@@ -1,12 +1,12 @@
 const HttpStatusCodes = require('../common/httpStatusCodes');
-const seatService = require('../services/seatService');
+//const seatService = require('../services/seatService');
 const bookingService = require('../services/bookingService');
 
 class bookingTicketController {
   //con loi chua fix xong
   async bookingTicket(req, res) {
     try {
-      console.log("Đã vào tới đây");
+      console.log('Đã vào tới đây');
       const userId = req.user.user.userId;
       const { chuyenXe, danhSachGhe, tongTien, trangThaiVe } = req.body;
       // if (!userId || !chuyenXeId || !danhSachGhe || !paymentDetails) {
@@ -30,7 +30,7 @@ class bookingTicketController {
         danhSachGhe: danhSachGhe,
         user: userId,
         tongTien: tongTien,
-        trangThaiVe: trangThaiVe
+        trangThaiVe: trangThaiVe,
       });
       // const paymentResult = await bookingService.processPayment(paymentDetails);
       // if (!paymentResult.success) {
@@ -49,9 +49,7 @@ class bookingTicketController {
         status: true,
         message: 'Booking ticket successfully',
       });
-    } 
-    catch (error) 
-    {
+    } catch (error) {
       console.error(error);
       return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json({
         status: false,

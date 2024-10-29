@@ -22,11 +22,18 @@ const createXeService = async (data) => {
 };
 const getXeById = async (id) => {
   try {
-    return await Xe.findById(id).populate('loaiXe');
+    console.log('ID xe: ' + id);
+    const getXe = await Xe.findById(id);
+    if (!getXe) {
+      throw new Error('Not found');
+    }
+    return getXe;
   } catch (error) {
+    console.error(error);
     throw new Error('Error fetching vehicle by id', error);
   }
 };
+
 const removeCarService = async (id) => {
   try {
     return await Xe.findByIdAndDelete(id);
