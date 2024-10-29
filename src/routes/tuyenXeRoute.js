@@ -5,10 +5,12 @@ const { authenticateToken, authorizeRoles } = require('../middlewares/jwt');
 router.get(
   '/',
   authenticateToken,
-  authorizeRoles('admin'),
+  authorizeRoles('admin', 'user'),
   tuyenXeController.getListTuyenXes,
 );
+router.get('/tim', tuyenXeController.getTuyenXeByDiemDiDiemDen);
 router.post('/create', tuyenXeController.postTuyenXes);
 router.put('/:id', tuyenXeController.putTuyenXe);
 router.delete('/:id', tuyenXeController.deleteTuyenXe);
+
 module.exports = router;

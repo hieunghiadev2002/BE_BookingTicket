@@ -1,26 +1,26 @@
 const HttpStatusCodes = require('../common/httpStatusCodes');
 const ticketService = require('../services/ticketService');
-const TicketService = require('../services/ticketService');
+
 class TicketController {
   async getTickets(req, res) {
     try {
-      const tickets = await TicketService.getAllTickets();
+      const tickets = await ticketService.getAllTickets();
       console.log(tickets);
       return res.status(HttpStatusCodes.OK).json({
         status: true,
         data: tickets,
       });
     } catch (error) {
-       return res.status(HttpStatusCodes.OK).json({
+      return res.status(HttpStatusCodes.OK).json({
         status: true,
         data: tickets,
-      })
+      });
     }
   }
   async getTicketById(req, res) {
     try {
       const { id } = req.params;
-      const ticket = await TicketService.getTicketById(id);
+      const ticket = await ticketService.getTicketById(id);
       if (!ticket) {
         return res.status(400).json({
           status: 'false',
@@ -39,34 +39,33 @@ class TicketController {
       });
     }
   }
-  
+
   async getTicketByUserId(req, res) {
     try {
-      const userID = req.user.user.id;
-      console.log("UserId: " + userID);
-      const ticket = await TicketService.getTicketsByUser(userID);
-      console.log("Danh Sách ticket:" +ticket)
+      const userID = req.params;
+      console.log(userID);
+      const ticket = await ticketService.getTicketsByUser(userID);
       return res.status(HttpStatusCodes.OK).json({
         status: true,
         data: ticket,
       });
     } catch (error) {
-       return res.status(HttpStatusCodes.OK).json({
-        status: true,
-        data: ticket,
-      })
+      return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        status: 'false',
+        message: error.message,
+      });
     }
   }
-  
+
   async updateTicket(req, res) {
     try {
       const { id } = req.params;
       const { chuyenXe, trangThaiVe, tongTien, danhSachGhe } = req.body;
-      const updatedTicket= await ticketService.updateTicket(id, {
-        chuyenXe, 
-        trangThaiVe, 
+      const updatedTicket = await ticketService.updateTicket(id, {
+        chuyenXe,
+        trangThaiVe,
         tongTien,
-        danhSachGhe
+        danhSachGhe,
       });
       if (!updatedTicket) {
         return res.status(HttpStatusCodes.BAD_REQUEST).json({
@@ -83,7 +82,6 @@ class TicketController {
       console.error(error);
       return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR);
     }
-
   }
   async deleteTicket(req, res) {
     try {

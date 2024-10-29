@@ -1,5 +1,7 @@
 const { check, validationResult } = require('express-validator');
 const HttpStatusCodes = require('../common/httpStatusCodes');
+const mongoose = require('mongoose'); // Đảm bảo import mongoose
+const chuyenXeService = require('../services/chuyenXeService');
 
 class validator {
   constructor() {}
@@ -98,12 +100,12 @@ class validator {
     ];
   }
   validateCreateBooking() {
-    return[
+    return [
       check('chuyenXe', 'Chuyen Xe is required').exists(),
       check('chuyenXe', 'Chuyen Xe is not valid').isMongoId(),
       check('danhSachGhe', 'Danh Sach Ghe is required').exists(),
       check('danhSachGhe', 'Danh Sach Ghe is not valid').isArray(),
-    
+
       //check('user', 'User is required').exists(),
       (req, res, next) => {
         const errors = validationResult(req);
@@ -115,6 +117,28 @@ class validator {
         next();
       },
     ];
+  }
+  checkValidateGetTicketByUserId(req, res, next) {
+    if (
+      !req.params ||
+      !req.params.id ||
+      !mongoose.Types.ObjectId.isValid(req.params.id)
+    ) {
+      return res.status(HttpStatusCodes.BAD_REQUEST).json({
+        status: 'false',
+        message: 'Id is not valid',
+      });
+    }
+    next();
+  }
+  async checkChuyenXeExists(ngayDi, ngayDen, giaChuyenXe, tuyenXe, xe) {
+    return await chuyenXeService.findChuyenXe({
+      ngayDi,
+      ngayDen,
+      giaChuyenXe,
+      tuyenXe,
+      xe,
+    });
   }
 }
 

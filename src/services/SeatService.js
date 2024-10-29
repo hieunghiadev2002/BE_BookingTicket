@@ -1,4 +1,5 @@
 const BookingSchema = require('../models/Ticket');
+const SeatSchema = require('../models/ViTriGhe');
 class SeatService {
   async checkSeatAvailability({ chuyenXeId, danhSachGhe }) {
     try {
@@ -10,6 +11,9 @@ class SeatService {
     } catch (error) {
       throw new Error(error.message);
     }
+  }
+  async getViTriGheByPrefix(prefix) {
+    return SeatSchema.find({ soGhe: { $regex: `^${prefix}` } });
   }
 }
 

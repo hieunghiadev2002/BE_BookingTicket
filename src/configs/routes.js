@@ -11,6 +11,7 @@ const BenXeRouter = require('../routes/benXeRoute');
 const BookingRouter = require('../routes/bookingTicketRoute');
 const ticketRouter = require('../routes/ticketRoute');
 const validateCreateBooking = require('../middlewares/validator');
+const chiTietGheRouter = require('../routes/chiTietGheRoute');
 const configureRoutes = (app) => {
   //app.use('/', welcome);
   app.use('/api/auth', authRoute);
@@ -39,7 +40,7 @@ const configureRoutes = (app) => {
     TinhThanhRouter,
   );
 
-  app.use('/api/tuyen-xe', jwt.authenticateToken, TuyenXeRouter);
+  app.use('/api/tuyen-xe', TuyenXeRouter);
   app.use('/seat', jwt.authenticateToken, seatRouter);
   app.use(
     '/api/ben-xe',
@@ -47,22 +48,20 @@ const configureRoutes = (app) => {
     jwt.authorizeRoles('admin', 'user'),
     BenXeRouter,
   );
-  app.use('/api/booking-ticket',
+  app.use(
+    '/api/booking-ticket',
     validateCreateBooking.validateCreateBooking(),
     jwt.authenticateToken,
     jwt.authorizeRoles('user', 'admin'),
     BookingRouter,
   );
-  app.use('/api/ticket', 
-    jwt.authenticateToken, 
+  app.use(
+    '/api/ticket',
+    jwt.authenticateToken,
     jwt.authorizeRoles('user', 'admin'),
-    ticketRouter);
+    ticketRouter,
+  );
+  app.use('/api/chiTietGhe', chiTietGheRouter);
 };
-function welcome(req, res) {
-  res.status(HttpStatusCodes.OK).json({
-    title: 'API Booking',
-    dev: 'Nguyen Phuc Dat',
-    subject: 'NodeJS',
-  });
-}
+
 module.exports = configureRoutes;

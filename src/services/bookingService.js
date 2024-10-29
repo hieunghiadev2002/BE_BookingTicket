@@ -9,7 +9,7 @@ class BookingService {
         danhSachGhe,
         user,
         tongTien,
-        trangThaiVe
+        trangThaiVe,
       });
       await newBooking.save();
       return newBooking;
@@ -26,8 +26,7 @@ class BookingService {
         confirm: true,
       });
       return { success: true, data: paymentIntent };
-    } catch (error) 
-    {
+    } catch (error) {
       return { success: false, message: error.message };
     }
   }
@@ -48,7 +47,4 @@ class BookingService {
   //   return TicketSchema.findByIdAndDelete(id);
   // }
 }
-
-
-
 module.exports = new BookingService();

@@ -21,9 +21,13 @@ class ticketService {
   }
   async getTicketsByUser(userID) {
     try {
-      return TicketSchema.find({user: mongoose.Types.ObjectId(userID)});
+      const ticket = TicketSchema.find({ user: userID });
+      if (!ticket) {
+        throw new Error('Ticket not found');
+      }
+      return ticket;
     } catch (error) {
-      throw new Error('Error fetching tickets by user', error);
+      throw new Error('Error fetching tickets by user', error.message);
     }
   }
 }
