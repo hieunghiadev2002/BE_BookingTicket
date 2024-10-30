@@ -12,6 +12,7 @@ const BookingRouter = require('../routes/bookingTicketRoute');
 const ticketRouter = require('../routes/ticketRoute');
 const validateCreateBooking = require('../middlewares/validator');
 const chiTietGheRouter = require('../routes/chiTietGheRoute');
+const adminRouter = require('../routes/adminRouter');
 const configureRoutes = (app) => {
   app.use('/api/auth', authRoute);
   app.use(
@@ -61,6 +62,7 @@ const configureRoutes = (app) => {
     ticketRouter,
   );
   app.use('/api/chiTietGhe', chiTietGheRouter);
+  app.use('/admin', adminRouter);
 };
 
 module.exports = configureRoutes;

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login with Axios</title>
+  <!-- Import Axios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(120deg, #3498db, #8e44ad);
+      padding: 20px;
+    }
+
+    .login-container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+      backdrop-filter: blur(10px);
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .login-header h1 {
+      color: #2c3e50;
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    .login-header p {
+      color: #7f8c8d;
+      font-size: 0.9em;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      font-size: 1em;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .input-group input:focus {
+      border-color: #3498db;
+    }
+
+    .input-group label {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #7f8c8d;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input:focus+label,
+    .input-group input:valid+label {
+      top: -10px;
+      left: 10px;
+      font-size: 0.8em;
+      background: white;
+      padding: 0 5px;
+      color: #3498db;
+    }
+
+    .login-button {
+      width: 100%;
+      padding: 15px;
+      background: #3498db;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .login-button:hover {
+      background: #2980b9;
+    }
+
+    .login-button:disabled {
+      background: #bdc3c7;
+      cursor: not-allowed;
+    }
+
+    .error-message {
+      color: #e74c3c;
+      font-size: 0.9em;
+      margin-top: 10px;
+      text-align: center;
+      display: none;
+    }
+
+    .success-message {
+      color: #27ae60;
+      font-size: 0.9em;
+      margin-top: 10px;
+      text-align: center;
+      display: none;
+    }
+
+    .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <div class="login-header">
+      <h1>Welcome Back</h1>
+      <p>Please enter your details to sign in</p>
+    </div>
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="input-group">
+        <input type="email" id="email" required>
+        <label for="email">Email address</label>
+      </div>
+      <div class="input-group">
+        <input type="password" id="password" required>
+        <label for="password">Password</label>
+      </div>
+      <button type="submit" class="login-button" id="loginButton">
+        Sign In
+        <div class="spinner" id="spinner"></div>
+      </button>
+      <div class="error-message" id="errorMessage"></div>
+      <div class="success-message" id="successMessage"></div>
+    </form>
+  </div>
+
+  <script>
+    // Check if user is already logged in
+    const checkAuthStatus = () => {
+      const accessToken = localStorage.getItem('accessToken');
+      if (accessToken) {
+        window.location.href = '/dashboard';
+      }
+    };
+
+    // Run on page load
+    checkAuthStatus();
+
+    // Token management functions
+    const tokenManager = {
+      setTokens: (accessToken, refreshToken) => {
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+      },
+      clearTokens: () => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+      }
+    };
+
+    const API_URL = 'http://localhost:3000/api/auth/login';  // Replace with your domain
+
+    async function handleLogin(event) {
+      event.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const loginButton = document.getElementById('loginButton');
+      const spinner = document.getElementById('spinner');
+      const errorMessage = document.getElementById('errorMessage');
+      const successMessage = document.getElementById('successMessage');
+
+      // Reset messages
+      errorMessage.style.display = 'none';
+      successMessage.style.display = 'none';
+
+      // Show loading state
+      loginButton.disabled = true;
+      spinner.style.display = 'block';
+      loginButton.textContent = 'Signing in...';
+
+      try {
+        const response = await axios.post(API_URL, {
+          email: email,
+          password: password
+        });
+
+        if (response.data.status === 'true') {
+          // Extract tokens from response
+          const { accessToken, refreshToken } = response.data.result;
+
+          // Store tokens
+          tokenManager.setTokens(accessToken, refreshToken);
+
+          // Show success message
+          successMessage.textContent = 'Login successful! Redirecting...';
+          successMessage.style.display = 'block';
+
+          // Redirect to dashboard with a slight delay to show success message
+          setTimeout(() => {
+            window.location.href = '/admin/dashboard';
+          }, 1000);
+        } else {
+          // Handle unsuccessful login
+          errorMessage.textContent = response.data.message || 'Login failed';
+          errorMessage.style.display = 'block';
+          tokenManager.clearTokens(); // Clear any existing tokens
+        }
+      } catch (error) {
+        // Handle error
+        console.error('Login error:', error);
+        errorMessage.textContent = error.response?.data?.message || 'An error occurred during login';
+        errorMessage.style.display = 'block';
+        tokenManager.clearTokens(); // Clear any existing tokens
+      } finally {
+        // Reset button state
+        loginButton.disabled = false;
+        spinner.style.display = 'none';
+        loginButton.textContent = 'Sign In';
+      }
+    }
+
+    // Add event listener for page visibility changes
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        checkAuthStatus(); // Check auth status when tab becomes visible
+      }
+    });
+  </script>
+</body>
+
+</html>
