@@ -33,21 +33,11 @@ const configureRoutes = (app) => {
     jwt.authorizeRoles('user', 'admin'),
     ChuyenXeRouter,
   );
-  app.use(
-    '/api/tinh-thanh',
-    jwt.authenticateToken,
-    jwt.authorizeRoles('user', 'admin'),
-    TinhThanhRouter,
-  );
+  app.use('/api/tinh-thanh', TinhThanhRouter);
 
   app.use('/api/tuyen-xe', TuyenXeRouter);
   app.use('/seat', jwt.authenticateToken, seatRouter);
-  app.use(
-    '/api/ben-xe',
-    jwt.authenticateToken,
-    jwt.authorizeRoles('admin', 'user'),
-    BenXeRouter,
-  );
+  app.use('/api/ben-xe', BenXeRouter);
   app.use(
     '/api/booking-ticket',
     validateCreateBooking.validateCreateBooking(),
