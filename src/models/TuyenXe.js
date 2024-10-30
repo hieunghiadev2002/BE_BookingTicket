@@ -21,7 +21,7 @@ const tuyenXeSchema = new mongoose.Schema({
     require: true,
     trim: true,
   },
-  khoangCach: {
+  quangDuong: {
     type: String,
     require: true,
     trim: true,

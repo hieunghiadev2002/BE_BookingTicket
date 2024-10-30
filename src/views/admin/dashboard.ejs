@@ -195,11 +195,11 @@
         <i class="fas fa-route"></i>
         <span>Quản Lý Tuyến Xe</span>
       </a>
-      <a href="/trips" class="menu-item">
+      <a href="/admin/chuyen-xe" class="menu-item">
         <i class="fas fa-bus"></i>
         <span>Quản Lý Chuyến Xe</span>
       </a>
-      <a href="/tickets" class="menu-item">
+      <a href="/admin/tickets" class="menu-item">
         <i class="fas fa-ticket-alt"></i>
         <span>Quản Lý Vé</span>
       </a>
@@ -209,7 +209,6 @@
       <span>Đăng Xuất</span>
     </button>
   </div>
-
   <!-- Main Content -->
   <div class="main-content" id="mainContent">
     <div class="header">
@@ -255,7 +254,7 @@
       localStorage.removeItem('refreshToken');
 
       // Redirect to login page
-      window.location.href = '/login';
+      window.location.href = '/admin/login';
     }
 
     // Check Authentication

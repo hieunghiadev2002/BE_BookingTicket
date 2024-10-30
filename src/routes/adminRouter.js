@@ -9,4 +9,8 @@ router.get('/dashboard', (req, res) => {
 router.get('/tuyen-xe', (req, res) => {
   res.render('admin/TuyenXe/tableTuyenXe');
 });
+
+router.get('/chuyen-xe', (req, res) => {
+  res.render('admin/ChuyenXe/tableChuyenXe');
+});
 module.exports = router;

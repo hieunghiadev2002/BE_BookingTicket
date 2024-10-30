@@ -50,14 +50,14 @@ class tuyenXeController {
 
   async postTuyenXes(req, res) {
     try {
-      const { tenTuyenXe, diemDi, diemDen, timeDiChuyen, khoangCach, benXe } =
+      const { tenTuyenXe, diemDi, diemDen, timeDiChuyen, quangDuong, benXe } =
         req.body;
       const newTuyenXe = await tuyenXeService.postTuyenXe({
         tenTuyenXe,
         diemDi,
         diemDen,
         timeDiChuyen,
-        khoangCach,
+        quangDuong,
         benXe,
       });
       if (!newTuyenXe) {
@@ -82,14 +82,14 @@ class tuyenXeController {
   async putTuyenXe(req, res) {
     try {
       const { id } = req.params;
-      const { tenTuyenXe, diemDi, diemDen, timeDiChuyen, khoangCach, benXe } =
+      const { tenTuyenXe, diemDi, diemDen, timeDiChuyen, quangDuong, benXe } =
         req.body;
       const updateTuyenXe = await tuyenXeService.putTuyenXe(id, {
         tenTuyenXe,
         diemDi,
         diemDen,
         timeDiChuyen,
-        khoangCach,
+        quangDuong,
         benXe,
       });
       if (!updateTuyenXe) {

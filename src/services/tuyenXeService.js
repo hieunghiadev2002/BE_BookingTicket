@@ -42,7 +42,9 @@ class tuyenXeService {
   }
   async putTuyenXe(id, data) {
     try {
-      return await this.tuyenXeSchema.updateOne(data);
+      return await this.tuyenXeSchema.findByIdAndUpdate(id, data, {
+        new: true,
+      });
     } catch (error) {
       throw new Error('Error updating route', error);
     }
