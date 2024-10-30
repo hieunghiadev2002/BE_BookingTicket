@@ -91,20 +91,20 @@
   </div>
 
   <div class="container">
-    <h1>Quản Lý Tuyến Xe</h1>
+    <h1>Quản Lý Xe</h1>
 
-    <button class="btn btn-success mb-3" onclick="showAddModal()">Thêm Tuyến Xe Mới</button>
+    <button class="btn btn-success mb-3" onclick="showAddModal()">Thêm Xe Mới</button>
     <div class="table-responsive">
       <table class="table table-bordered table-hover">
         <thead class="table-primary">
           <tr>
             <th>ID</th>
-            <th>Tên Tuyến</th>
-            <th>Điểm Đi</th>
-            <th>Điểm Đến</th>
-            <th>Quãng Đường</th>
-            <th>Thời Gian Di Chuyển</th>
-            <th>Trạng Thái</th>
+            <th>Tên Xe</th>
+            <th>Biển Số</th>
+            <th>Nhà Sản Xuất</th>
+            <th>Màu Xe</th>
+            <th>Loại Xe</th>
+            <th>Sức Chứa</th>
             <th>Thao Tác</th>
           </tr>
         </thead>
@@ -120,41 +120,38 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 id="modalTitle" class="modal-title">Thêm Tuyến Xe</h5>
+          <h5 id="modalTitle" class="modal-title">Thêm Xe</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form id="routeForm" onsubmit="handleSubmit(event)">
             <input type="hidden" id="routeId">
             <div class="mb-3">
-              <label for="tenTuyenXe" class="form-label">Tên Tuyến Xe</label>
-              <input type="text" id="tenTuyenXe" class="form-control" required>
+              <label for="tenXe" class="form-label">Tên Xe</label>
+              <input type="text" id="tenXe" class="form-control" required>
             </div>
             <div class="mb-3">
-              <label for="diemDi" class="form-label">Điểm Đi</label>
-              <select id="diemDi" class="form-control" required>
-                <option value="">Chọn tỉnh/thành phố</option>
+              <label for="bienSo" class="form-label">Biển Số</label>
+              <input type="text" id="bienSo" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="nhaSanXuat" class="form-label">Nhà Sản Xuất</label>
+              <input type="text" id="nhaSanXuat" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="colorXe" class="form-label">Màu Xe</label>
+              <input type="text" id="colorXe" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="loaiXe" class="form-label">Loại Xe</label>
+              <select id="loaiXe" class="form-control" required>
+                <option value="">Chọn Loại Xe</option>
               </select>
             </div>
             <div class="mb-3">
-              <label for="diemDen" class="form-label">Điểm Đến</label>
-              <select id="diemDen" class="form-control" required>
-                <option value="">Chọn tỉnh/thành phố</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label for="quangDuong" class="form-label">Quãng Đường (km)</label>
-              <input type="number" id="quangDuong" class="form-control" required>
-            </div>
-            <div class="mb-3">
-              <label for="timeDiChuyen" class="form-label">Thời Gian Di Chuyển</label>
-              <input type="text" id="timeDiChuyen" class="form-control" required>
-            </div>
-            <div class="mb-3">
-              <label for="benXe" class="form-label">Bến Xe</label>
-              <select id="benXe" class="form-control" required>
-                <option value="">Chọn Bến Xe</option>
-              </select>
+              <label for="sucChua" class="form-label">Sức Chứa</label>
+              <input type="number" id="sucChua" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-primary w-100">Lưu</button>
           </form>
@@ -170,8 +167,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    const API_URL = ' http://localhost:3000/api/tuyen-xe'; const
-      TINH_THANH_API_URL = 'http://localhost:3000/api/tinh-thanh'; const benXeURL = 'http://localhost:3000/api/ben-xe';
+    const API_URL = ' http://localhost:3000/api/xe';
+    const loaiXeURL = 'http://localhost:3000/api/loai-xe';
     const axiosInstance = axios.create({ baseURL: API_URL, headers: { 'Content-Type': 'application/json' } });
     axiosInstance.interceptors.request.use((config) => {
       const token = localStorage.getItem('accessToken');
@@ -182,58 +179,36 @@
     );
 
     let routes = [];
-    async function loadTinhThanh() {
+    let loaiXeList = [];
+    async function loadLoaiXe() {
       try {
-        const response = await axios.get(TINH_THANH_API_URL);
-        if (response.data.status === true) {
-          const tinhThanhList = response.data.data;
-          const diemDiSelect = document.getElementById('diemDi');
-          const diemDenSelect = document.getElementById('diemDen');
-
-          tinhThanhList.forEach((tinh) => {
-            const option = document.createElement('option');
-            option.value = tinh.tenTinhThanh;
-            option.text = tinh.tenTinhThanh;
-
-            // Thêm option vào cả "Điểm đi" và "Điểm đến"
-            diemDiSelect.appendChild(option.cloneNode(true));
-            diemDenSelect.appendChild(option.cloneNode(true));
-          });
-        } else {
-          showNotification('Không thể tải danh sách tỉnh thành', true);
-        }
-      } catch (error) {
-        console.error('Lỗi khi tải tỉnh thành:', error);
-        showNotification('Có lỗi xảy ra khi tải tỉnh thành', true);
-      }
-    }
-    async function loadBenXe() {
-      try {
-
-        const response = await axios.get(benXeURL);
+        const response = await axios.get(loaiXeURL, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+          }
+        });
         if (response.status == 200) {
-          const benXeList = response.data.result;
-          const benXeSelect = document.getElementById('benXe');
-          console.log('benXeList', benXeList);
-
-          benXeList.forEach((bX) => {
+          loaiXeList = response.data.data;
+          console.log('loaiXeList: ', loaiXeList);
+          const loaiXeSelect = document.getElementById('loaiXe');
+          loaiXeList.forEach((lx) => {
             const option = document.createElement('option');
-            option.value = bX._id;
-            option.text = bX.tenBenXe;;
+            option.value = lx._id;
+            option.text = lx.tenLoaiXe;
 
             // Thêm option vào cả "Điểm đi" và "Điểm đến"
-            benXeSelect.appendChild(option.cloneNode(true));
+            loaiXeSelect.appendChild(option.cloneNode(true));
           });
         } else {
-          showNotification('Không thể tải danh sách Bến Xe', true);
+          showNotification('Không thể tải danh sách Loại Xe', true);
         }
       } catch (error) {
-        console.error('Lỗi khi tải Bến Xe:', error);
-        showNotification('Có lỗi xảy ra khi tải Bến Xe', error);
+        console.error('Lỗi khi tải Loại Xe:', error);
+        showNotification('Có lỗi xảy ra khi tải Loại Xe', true);
       }
     }
     function showAddModal() {
-      document.getElementById('modalTitle').innerText = 'Thêm Tuyến Xe';
+      document.getElementById('modalTitle').innerText = 'Thêm Xe';
       document.getElementById('routeForm').reset();
       document.getElementById('routeId').value = '';
       const modal = new bootstrap.Modal(document.getElementById('routeModal'));
@@ -243,14 +218,17 @@
     function showEditModal(id) {
       const route = routes.find(route => route.id === id);
       if (route) {
-        document.getElementById('modalTitle').innerText = 'Chỉnh Sửa Tuyến Xe';
+        document.getElementById('modalTitle').innerText = 'Chỉnh Sửa Xe';
         document.getElementById('routeId').value = route.id;
-        document.getElementById('tenTuyenXe').value = route.tenTuyenXe;
-        document.getElementById('diemDi').value = route.diemDi;
-        document.getElementById('diemDen').value = route.diemDen;
-        document.getElementById('quangDuong').value = route.quangDuong;
-        document.getElementById('timeDiChuyen').value = route.timeDiChuyen;
-        document.getElementById('benXe').value = route.benXe;
+        document.getElementById('tenXe').value = route.tenXe;
+        document.getElementById('bienSoXe').value = route.bienSoXe;
+        document.getElementById('nhaSanXuat').value = route.nhaSanXuat;
+        document.getElementById('colorXe').value = route.colorXe;
+        const loaiXe = loaiXeList.find(lx => lx.tenLoaiXe === route.loaiXe);
+        if (loaiXe) {
+          document.getElementById('loaiXe').value = loaiXe._id;
+        }
+        document.getElementById('sucChua').value = route.sucChua;
         const modal = new bootstrap.Modal(document.getElementById('routeModal'));
         modal.show();
       }
@@ -269,20 +247,23 @@
     async function fetchRoutes() {
       try {
         const response = await axiosInstance.get('');
-        if (response.data.status === "true") {
-          routes = response.data.result.map(route => ({
+        console.log('response: ', response);
+        console.log('response.data: ', response.data);
+        console.log('response.data.result: ', response.data.result);
+        if (response.status == 200) {
+          routes = response.data.data.map(route => ({
             id: route._id,
-            tenTuyenXe: route.tenTuyenXe,
-            diemDi: route.diemDi,
-            diemDen: route.diemDen,
-            timeDiChuyen: route.timeDiChuyen,
-            quangDuong: route.quangDuong,
-            benXe: route.benXe,
-            status: route.__v === 0 ? 'active' : 'inactive'
+            tenXe: route.tenXe,
+            bienSoXe: route.bienSoXe,
+            nhaSanXuat: route.nhaSanXuat,
+            colorXe: route.colorXe,
+            loaiXe: route.loaiXe.tenLoaiXe,
+            sucChua: route.sucChua,
+            //status: route.__v === 0 ? 'active' : 'inactive'
           }));
           renderTable(routes);
         } else {
-          showNotification('Không thể tải danh sách tuyến xe', true);
+          showNotification('Không thể tải danh sách Xe', true);
         }
       } catch (error) {
         console.error(error);
@@ -297,12 +278,12 @@
         const tr = document.createElement('tr');
         tr.innerHTML = `
     <td>${route.id}</td>
-    <td>${route.tenTuyenXe}</td>
-    <td>${route.diemDi}</td>
-    <td>${route.diemDen}</td>
-    <td>${route.quangDuong} km</td>
-    <td>${route.timeDiChuyen}</td>
-    <td>${route.status === 'active' ? 'Hoạt động' : 'Tạm dừng'}</td>
+    <td>${route.tenXe}</td>
+    <td>${route.bienSoXe}</td>
+    <td>${route.nhaSanXuat}</td>
+    <td>${route.colorXe}</td>
+    <td>${route.loaiXe}</td>
+    <td>${route.sucChua}</td>
     <td>
       <button class="btn btn-sm btn-primary edit-btn" onclick="showEditModal('${route.id}')">Sửa</button>
       <button class="btn btn-sm btn-danger delete-btn" onclick="deleteRoute('${route.id}')">Xóa</button>
@@ -316,28 +297,29 @@
 
       if (!localStorage.getItem('accessToken')) window.location.href = '/admin/login';
       fetchRoutes();
-      loadTinhThanh();
-      loadBenXe();
+      loadLoaiXe();
+
     });
 
     async function handleSubmit(event) {
       event.preventDefault(); // Ngăn chặn hành động submit mặc định cảu form
-
       const routeId = document.getElementById('routeId').value;
-      const tenTuyenXe = document.getElementById('tenTuyenXe').value;
-      const diemDi = document.getElementById('diemDi').value;
-      const diemDen = document.getElementById('diemDen').value;
-      const quangDuong = document.getElementById('quangDuong').value;
-      const timeDiChuyen = document.getElementById('timeDiChuyen').value;
-      const benXe = document.getElementById('benXe').value;
+      const tenXe = document.getElementById('tenXe').value;
+      const bienSoXe = document.getElementById('bienSoXe').value;
+      const nhaSanXuat = document.getElementById('nhaSanXuat').value;
+      const colorXe = document.getElementById('colorXe').value;
+      const loaiXe = document.getElementById('loaiXe').value;
+      console.log('Loai Xe: ', loaiXe);
+      const sucChua = document.getElementById('sucChua').value;
+
 
       const routeData = {
-        tenTuyenXe,
-        diemDi,
-        diemDen,
-        quangDuong,
-        timeDiChuyen,
-        benXe
+        tenXe,
+        bienSoXe,
+        nhaSanXuat,
+        colorXe,
+        loaiXe,
+        sucChua
       };
 
       try {
@@ -369,21 +351,21 @@
     }
 
     async function deleteRoute(routeId) {
-      const confirmDelete = confirm("Bạn có chắc chắn muốn xóa tuyến xe này không?");
+      const confirmDelete = confirm("Bạn có chắc chắn muốn xóa Xe này không?");
 
       if (!confirmDelete) return; // Nếu người dùng chọn 'Cancel', dừng chức năng xóa
 
       try {
         const response = await axiosInstance.delete(`/${routeId}`);
         if (response.status = 200) {
-          showNotification('Xóa tuyến xe thành công');
+          showNotification('Xóa Xe thành công');
           fetchRoutes(); // Tải lại danh sách tuyến xe sau khi xóa thành công
         } else {
-          showNotification('Không thể xóa tuyến xe, vui lòng thử lại', true);
+          showNotification('Không thể xóa Xe, vui lòng thử lại', true);
         }
       } catch (error) {
         console.error('Lỗi khi xóa tuyến xe:', error);
-        showNotification('Có lỗi xảy ra khi xóa tuyến xe', true);
+        showNotification('Có lỗi xảy ra khi xóa Xe', true);
       }
     }
 

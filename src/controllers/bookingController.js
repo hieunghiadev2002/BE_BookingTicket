@@ -7,8 +7,11 @@ class bookingTicketController {
   async bookingTicket(req, res) {
     try {
       console.log('Đã vào tới đây');
-      const userId = req.user.user.userId;
-      const { chuyenXe, danhSachGhe, tongTien, trangThaiVe } = req.body;
+      const userId = req.user.user.id;
+      console.log('userId', userId);
+      //console.log('req.body', req.user);
+      const { chuyenXe, danhSachGhe, tongTien, trangThaiVe, ngayLapVe } =
+        req.body;
       // if (!userId || !chuyenXeId || !danhSachGhe || !paymentDetails) {
       //   return res.status(HttpStatusCodes.BAD_REQUEST).json({
       //     status: false,
@@ -31,6 +34,7 @@ class bookingTicketController {
         user: userId,
         tongTien: tongTien,
         trangThaiVe: trangThaiVe,
+        ngayLapVe: ngayLapVe,
       });
       // const paymentResult = await bookingService.processPayment(paymentDetails);
       // if (!paymentResult.success) {

@@ -1,8 +1,8 @@
 const Xe = require('../models/Xe');
 
-const getAllXeSerivce = async ({ page, limit }) => {
+const getAllXeSerivce = async () => {
   try {
-    return await Xe.find().skip((page - 1) * limit).limit;
+    return await Xe.find().populate('loaiXe');
   } catch (error) {
     throw new Error('Error fetching vehicles', error);
   }

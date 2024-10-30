@@ -1,20 +1,9 @@
-const { ObjectId } = require('bson');
 const Xe = require('../models/Xe');
-const {
-  getXeBydId,
-  createXeService,
-  removeCarService,
-} = require('../services/xeService');
+const xeService = require('../services/xeService');
 class xeController {
   async getAllXe(req, res) {
     try {
-      const getAllXe = await Xe.find();
-      if (!getAllXe) {
-        return res.status(400).json({
-          status: 'false',
-          message: 'Lấy danh sách xe thất bại',
-        });
-      }
+      const getAllXe = await xeService.getAllXeSerivce();
       return res.status(200).json({
         status: 'true',
         message: 'Lấy danh sách xe thành công',
@@ -53,7 +42,7 @@ class xeController {
     try {
       const { tenXe, bienSoXe, nhaSanXuat, colorXe, loaiXe, sucChua } =
         req.body;
-      const newXe = await createXeService({
+      const newXe = await xeService.createXeService({
         tenXe,
         bienSoXe,
         nhaSanXuat,
@@ -83,7 +72,7 @@ class xeController {
   async getXeById(req, res) {
     try {
       const { id } = req.params;
-      const xe = await getXeBydId(id);
+      const xe = await xeService.getXeById(id);
       if (!xe) {
         return res.status(400).json({
           status: 'false',
@@ -111,7 +100,7 @@ class xeController {
           message: 'Id không hợp lệ',
         });
       }
-      const xe = await removeCarService(id);
+      const xe = await xeService.removeCarService(id);
       if (!xe) {
         return res.status(400).json({
           status: 'false',
@@ -135,7 +124,7 @@ class xeController {
     try {
       const { id } = req.params;
       const data = req.body;
-      const xe = await Xe.findByIdAndUpdate(id, data);
+      const xe = await xeService.updateXeService(id, data);
       if (!xe) {
         return res.status(400).json({
           status: 'false',
