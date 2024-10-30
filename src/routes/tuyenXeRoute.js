@@ -8,7 +8,7 @@ router.get(
   authorizeRoles('admin', 'user'),
   tuyenXeController.getListTuyenXes,
 );
-router.get('/tim', tuyenXeController.getTuyenXeByDiemDiDiemDen);
+router.post('/tim', tuyenXeController.getTuyenXeByDiemDiDiemDen);
 router.post('/create', tuyenXeController.postTuyenXes);
 router.put('/:id', tuyenXeController.putTuyenXe);
 router.delete('/:id', tuyenXeController.deleteTuyenXe);
