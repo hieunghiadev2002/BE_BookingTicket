@@ -9,15 +9,14 @@ const path = require('path');
 const ViTriGheSchema = require('./models/ViTriGhe');
 //Middleware limit request
 const limiter = require('./configs/limiter');
-const HttpStatusCodes = require('./common/httpStatusCodes');
 const stripe = require('stripe');
-// eslint-disable-next-line no-undef
 
 require('./configs/config');
 app.use(express.json());
 app.use(cors());
 connectDb;
-
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 // const seedDataViTriGhe = async () => {
 //   console.log('seedDataViTriGhe');
 //   for (let i = 1; i <= 8; i++) {
