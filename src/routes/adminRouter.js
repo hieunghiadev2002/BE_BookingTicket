@@ -13,4 +13,7 @@ router.get('/tuyen-xe', (req, res) => {
 router.get('/chuyen-xe', (req, res) => {
   res.render('admin/ChuyenXe/tableChuyenXe');
 });
+router.get('/xe', (req, res) => {
+  res.render('admin/Xe/tableXe');
+});
 module.exports = router;

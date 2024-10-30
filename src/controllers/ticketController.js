@@ -2,6 +2,31 @@ const HttpStatusCodes = require('../common/httpStatusCodes');
 const ticketService = require('../services/ticketService');
 
 class TicketController {
+  async createTicket(req, res) {
+    try {
+      const user = req.user.user._id;
+      console.log('User', user);
+      const { danhSachGhe, chuyenXe } = req.body;
+      const ticket = await ticketService.createTicket({
+        danhSachGhe,
+        chuyenXe,
+        user,
+        tongTien,
+        ngayLapVe: Date.now(),
+      });
+      return res.status(HttpStatusCodes.CREATED).json({
+        status: 'true',
+        message: 'Create Ticket successfully',
+        data: ticket,
+      });
+    } catch (error) {
+      return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        status: 'false',
+        message: error.message,
+      });
+    }
+  }
+
   async getTickets(req, res) {
     try {
       const tickets = await ticketService.getAllTickets();

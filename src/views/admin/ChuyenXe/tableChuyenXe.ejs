@@ -73,11 +73,11 @@
         <i class="fas fa-route"></i>
         <span>Quản Lý Tuyến Xe</span>
       </a>
-      <a href="/trips" class="menu-item">
+      <a href="/admin/chuyen-xe" class="menu-item">
         <i class="fas fa-bus"></i>
         <span>Quản Lý Chuyến Xe</span>
       </a>
-      <a href="/tickets" class="menu-item">
+      <a href="/admin/xe" class="menu-item">
         <i class="fas fa-ticket-alt"></i>
         <span>Quản Lý Vé</span>
       </a>
@@ -181,6 +181,8 @@
       (error) => Promise.reject(error)
     );
     let routes = [];
+    let tuyenXeList = [];
+    let xeList = [];
     async function loadTuyenXe() {
       try {
 
@@ -190,14 +192,14 @@
           }
         });
         if (response.status == 200) {
-          const tuyenXeList = response.data.result;
+          tuyenXeList = response.data.result;
           const tuyenXeSelect = document.getElementById('tuyenXe');
           console.log('tuyenXeList', tuyenXeList);
 
-          tuyenXeList.forEach((tuyenXe) => {
+          tuyenXeList.forEach((tx) => {
             const option = document.createElement('option');
-            option.value = tuyenXe._id;
-            option.text = tuyenXe.tenTuyenXe;
+            option.value = tx._id;
+            option.text = tx.tenTuyenXe;
             tuyenXeSelect.appendChild(option.cloneNode(true));
           });
         } else {
@@ -219,7 +221,7 @@
         });
         console.log('response', response);
         if (response.status == 200) {
-          const xeList = response.data.data;
+          xeList = response.data.data;
           const xeSelect = document.getElementById('xe');
           //console.log('xeList', response.data.data);
 
@@ -277,15 +279,28 @@
 
     function showEditModal(id) {
       const route = routes.find(route => route.id === id);
+
       if (route) {
+        console.log('route: ', route);
         document.getElementById('modalTitle').innerText = 'Chỉnh Sửa Chuyến Xe';
         document.getElementById('routeId').value = route.id;
-        document.getElementById('ngayDi').value = route.ngayDi;
-        document.getElementById('ngayDen').value = route.ngayDen;
-        document.getElementById('Gia').value = route.giaChuyenXe;
+        const ngayDi = new Date(route.ngayDi).toISOString().slice(0, 16);
+        const ngayDen = new Date(route.ngayDen).toISOString().slice(0, 16);
+        document.getElementById('ngayDi').value = ngayDi;
+        document.getElementById('ngayDen').value = ngayDen;
+        document.getElementById('giaChuyenXe').value = route.giaChuyenXe;
         document.getElementById('soChoTrong').value = route.soChoTrong;
-        document.getElementById('tuyenXe').value = route.tuyenXe;
-        document.getElementById('xe').value = route.xe;
+        // Tìm kiếm ID của tuyến xe và xe dựa trên tên của chúng
+        const tuyenXe = tuyenXeList.find(tx => tx.tenTuyenXe === route.tuyenXe);
+        const xe = xeList.find(x => x.tenXe === route.xe);
+
+        if (tuyenXe) {
+          document.getElementById('tuyenXe').value = tuyenXe._id;
+        }
+        if (xe) {
+          document.getElementById('xe').value = xe._id;
+        }
+
         const modal = new bootstrap.Modal(document.getElementById('routeModal'));
         modal.show();
       }
@@ -364,7 +379,8 @@
       const ngayDen = document.getElementById('ngayDen').value;
       const giaChuyenXe = document.getElementById('giaChuyenXe').value;
       const soChoTrong = document.getElementById('soChoTrong').value;
-      const tuyenXe = document.getElementById('tuyenXe').xee;
+      const tuyenXe = document.getElementById('tuyenXe').value;
+      console.log('tuyenXe: ', tuyenXe);
       const xe = document.getElementById('xe').value;
 
       const routeData = {
@@ -381,7 +397,7 @@
         console.log('routeData: ', routeData);
         if (routeId) {
           // Nếu có routeId, tức là đang chỉnh sửa tuyến xe
-          response = await axiosInstance.put(`/ ${routeId} `, routeData);
+          response = await axiosInstance.put(`/${routeId}`, routeData);
           console.log('Đã vaafo hàm chỉnh sửa với routeID: ', routeId);
         } else {
           // Nếu không có routeId, tức là thêm tuyến xe mới
@@ -410,7 +426,7 @@
       if (!confirmDelete) return; // Nếu người dùng chọn 'Cancel', dừng chức năng xóa
 
       try {
-        const response = await axiosInstance.delete(`/ ${routeId}`);
+        const response = await axiosInstance.delete(`/${routeId}`);
         if (response.status = 200) {
           showNotification('Xóa Chuyến xe thành công');
           fetchRoutes(); // Tải lại danh sách tuyến xe sau khi xóa thành công

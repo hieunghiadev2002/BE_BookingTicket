@@ -45,9 +45,23 @@ class chuyenXeService {
       throw new Error('Error creating route', error);
     }
   }
-  async putChuyenXe(id, data) {}
-  async deleteChuyenXe(id) {}
-  async getChuyenXeByTuyenXeId({tuyenXeId, ngayDi}) {
+  async putChuyenXe(id, data) {
+    try {
+      return await this.chuyenXeSchema.findByIdAndUpdate(id, data, {
+        new: true,
+      });
+    } catch (error) {
+      throw new Error('Error updating route', error);
+    }
+  }
+  async xoaChuyenXe(id) {
+    try {
+      return await this.chuyenXeSchema.findByIdAndDelete(id);
+    } catch (error) {
+      throw new Error('Error deleting route', error);
+    }
+  }
+  async getChuyenXeByTuyenXeId(id) {
     try {
       const inputDate = new Date(ngayDi);
       

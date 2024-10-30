@@ -35,6 +35,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 //set view directory
 app.set('views', path.join(__dirname, 'views'));
+app.use('/partical', express.static(__dirname + '/views/partical'));
 //Static folder
 app.use(express.static('src/public'));
 // Middleware

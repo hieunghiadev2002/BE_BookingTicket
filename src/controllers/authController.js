@@ -32,6 +32,7 @@ class authController {
   async register(req, res) {
     try {
       const { fullName, email, password, phoneNumber } = req.body;
+      console.log(req.body);
       const result = registerService(fullName, email, password, phoneNumber);
       if (result.status === 'false') {
         return res.status(400).json(result);

@@ -64,6 +64,7 @@ const registerService = (fullName, email, password, phoneNumber) => {
   //check if user exists
   const checkEmail = userSchema.findOne({ email });
   const checkPhone = userSchema.findOne({ phoneNumber });
+
   if (!checkEmail || !checkPhone) {
     return response('false', 'User already exists');
   }
@@ -81,14 +82,11 @@ const registerService = (fullName, email, password, phoneNumber) => {
     otp: generateOTP,
     otpExpires,
   });
+
   newUser.save();
   //Send OTP to user
-  const result = emailService.sendOTP(
-    email,
-    'OTP',
-    generateOTPEmail(newUser, generateOTP),
-  );
-  return response('true', 'User registered successfully');
+
+  return response('true', 'User registered successfully', newUser);
 };
 const verifyOtpService = async (email, otp) => {
   try {

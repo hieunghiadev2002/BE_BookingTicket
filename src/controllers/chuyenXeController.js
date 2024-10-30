@@ -131,5 +131,59 @@ class chuyenXeController {
       });
     }
   }
+
+  async updateChuyenXe(req, res) {
+    try {
+      const { id } = req.params;
+      const { ngayDi, ngayDen, giaChuyenXe, soChoTrong, tuyenXe, xe } =
+        req.body;
+      const updatedChuyenXe = await chuyenXeService.putChuyenXe(id, {
+        ngayDi,
+        ngayDen,
+        giaChuyenXe,
+        soChoTrong,
+        tuyenXe,
+        xe,
+      });
+      if (!updatedChuyenXe) {
+        return res.status(400).json({
+          status: 'false',
+          message: 'Update route failed',
+        });
+      }
+      return res.status(200).json({
+        status: 'true',
+        message: 'Update route',
+        data: updatedChuyenXe,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: 'false',
+        message: error.message,
+      });
+    }
+  }
+  async deleteChuyenXe(req, res) {
+    try {
+      const { id } = req.params;
+      const deletedChuyenXe = await chuyenXeService.xoaChuyenXe(id);
+      if (!deletedChuyenXe) {
+        return res.status(400).json({
+          status: 'false',
+          message: 'Delete route failed',
+        });
+      }
+      return res.status(200).json({
+        status: 'true',
+        message: 'Delete route',
+        data: deletedChuyenXe,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: 'false',
+        message: error.message,
+      });
+    }
+  }
 }
 module.exports = new chuyenXeController();
