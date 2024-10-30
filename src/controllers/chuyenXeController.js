@@ -110,10 +110,9 @@ class chuyenXeController {
   async getChuyenXeByTuyenXeId(req, res) {
     try {
       //12-02-2002
-      //
-      const { tuyenXeId, ngayDi, ngayDen } = req.query;
-      console.log(req.query);
-      const chuyenXe = await chuyenXeService.getChuyenXeByTuyenXeId(tuyenXeId);
+      const { tuyenXeId, ngayDi } = req.query;
+      
+      const chuyenXe = await chuyenXeService.getChuyenXeByTuyenXeId({tuyenXeId, ngayDi});
       if (!chuyenXe) {
         return res.status(400).json({
           status: 'false',

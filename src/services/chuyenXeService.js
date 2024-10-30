@@ -47,18 +47,30 @@ class chuyenXeService {
   }
   async putChuyenXe(id, data) {}
   async deleteChuyenXe(id) {}
-  async getChuyenXeByTuyenXeId(id) {
+  async getChuyenXeByTuyenXeId({tuyenXeId, ngayDi}) {
     try {
+      const inputDate = new Date(ngayDi);
+      
       const chuyenXeTheoTuyen = await this.chuyenXeSchema
-        .find({ tuyenXe: id })
+        .find({
+          tuyenXe: tuyenXeId,
+          $expr: {
+            $eq: [
+              { $dateToString: { format: "%Y-%m-%d", date: "$ngayDi" } },
+              { $dateToString: { format: "%Y-%m-%d", date: inputDate } }
+            ]
+          }
+        })
         .populate('tuyenXe')
         .populate('xe');
+
       return chuyenXeTheoTuyen;
+      
     } catch (error) {
-      console.error(error);
-      throw new Error('Error fetching routes', error);
+      console.error('Error fetching routes:', error);
+      throw new Error('Error fetching routes');
     }
-  }
+}
 }
 
 module.exports = new chuyenXeService();

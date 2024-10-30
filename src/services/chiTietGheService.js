@@ -21,7 +21,8 @@ class ChiTietGheService {
     try {
       const getList = await ChiTietGheSchema.find({
         chuyenXe: id,
-      }).populate('chuyenXe');
+
+      }).populate('chuyenXe').populate('viTriGhe');
       if (!getList) {
         throw new Error('Get seat failed');
       }
